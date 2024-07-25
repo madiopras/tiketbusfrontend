@@ -1,9 +1,15 @@
-import React from 'react'
+// /app/dashboard/page.tsx
+'use client';
+
+import { useUser } from '@/app/admin/context/UserContext';
 
 export default function HomeAdmin() {
+  const { user } = useUser();
+
   return (
     <div>
-      <p>Hallo ini halaman home admin</p>
+      <h1>Dashboard</h1>
+      {user && <p>Welcome to your dashboard, {user.name}</p>}
     </div>
-  )
+  );
 }
