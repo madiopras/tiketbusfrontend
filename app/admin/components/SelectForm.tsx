@@ -9,13 +9,14 @@ interface CustomSelectProps {
   id?: string;
   name: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: Option[];
   required?: boolean;
+  disabled?: boolean;
 }
 
-const SelectForm: React.FC<CustomSelectProps> = React.memo(({ id, name, value, onChange, label, options, required = false }) => {
+const SelectForm: React.FC<CustomSelectProps> = React.memo(({ id, name, value, onChange, label, options, required = false, disabled = false }) => {
   return (
     <div className="form-control mb-2">
       <label className="label text-sm" htmlFor={id}>{label}</label>
@@ -26,6 +27,7 @@ const SelectForm: React.FC<CustomSelectProps> = React.memo(({ id, name, value, o
         onChange={onChange}
         className="select select-bordered select-sm"
         required={required}
+        disabled={disabled}
       >
         <option value="">Select {label}</option>
         {options.map(option => (

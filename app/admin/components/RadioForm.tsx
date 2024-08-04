@@ -3,12 +3,13 @@ import React from 'react';
 interface CustomRadioGroupProps {
   name: string;
   value: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
   options: { label: string; value: boolean }[];
+  disabled?: boolean;
 }
 
-const RadioFormGroup: React.FC<CustomRadioGroupProps> = React.memo(({ name, value, onChange, label, options }) => {
+const RadioFormGroup: React.FC<CustomRadioGroupProps> = React.memo(({ name, value, onChange, label, options, disabled = false }) => {
   return (
     <div className="form-control mb-2">
       <label className="label text-sm">{label}</label>
@@ -22,6 +23,7 @@ const RadioFormGroup: React.FC<CustomRadioGroupProps> = React.memo(({ name, valu
               checked={value === option.value}
               onChange={onChange}
               className="radio radio-primary text-sm"
+              disabled={disabled}
             />
             <span className="ml-2 text-sm">{option.label}</span>
           </label>

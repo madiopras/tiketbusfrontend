@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import InputForm from "@/app/admin/components/InputForm";
-import SelectForm from "@/app/admin/components/SelectForm";
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
 import RadioFormGroup from './RadioForm';
 import ReusableModal from "@/app/admin/components/ModalPopUp";
@@ -34,12 +33,6 @@ const AdvanceSearchBus: React.FC<AdvanceSearchBusProps> = ({ isOpen, onClose, on
     { value: "wanita", label: "Wanita" },
   ];
 
-  const roleOptions = [
-    { value: "admin", label: "Admin" },
-    { value: "kasir", label: "Kasir Loket" },
-    { value: "customer", label: "Customer" },
-  ];
-
   const isActiveOptions = [
     { label: "Active", value: true },
     { label: "Inactive", value: false },
@@ -53,11 +46,8 @@ const AdvanceSearchBus: React.FC<AdvanceSearchBusProps> = ({ isOpen, onClose, on
       onClose={onClose}
     >
       <div className="grid grid-cols-2 gap-4">
-      <InputForm label="Name" variant="text" name="name" value={filters.name} onChange={handleChange} />
-      <InputForm label="Email" variant="email" name="email" value={filters.email} onChange={handleChange} />
-      <InputForm label="Phone Number" variant="text" name="phone_number" value={filters.phone_number} onChange={handleChange} />
-      <SelectForm label="Gender" id="gender" name="gender" value={filters.gender} onChange={handleChange} options={genderOptions} />
-      <SelectForm label="Role" id="role" name="role" value={filters.role} onChange={handleChange} options={roleOptions} />
+      <InputForm label="Bus Number" variant="text" name="bus_number" value={filters.bus_number} onChange={handleChange} />
+      <InputForm label="Supir" variant="text" name="operator_name" value={filters.operator_name} onChange={handleChange} />
       </div>
       
       <RadioFormGroup

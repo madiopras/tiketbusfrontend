@@ -10,13 +10,13 @@ import ActionButtonHeader from "../../components/ActionButtonHeader";
 import CollapsibleCard from "../../components/CollapsibleCard";
 import InputForm from "../../components/InputForm";
 import ActionButtonForm from "../../components/ActionButtonForm";
-import AdvanceSearchUser from "../../components/AdvanceSearchUser";
 import SelectForm from "../../components/SelectForm";
+import AdvanceSearchBus from "../../components/AdvanceSearchBus";
 
 const UserListPage = () => {
   const [buses, setBuses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState({ bus_number: "", operator_name: "", class_name: "", is_active: ""});
+  const [search, setSearch] = useState({ bus_number: "", type_bus: "", operator_name: "", class_name: "", is_active: ""});
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -30,6 +30,7 @@ const UserListPage = () => {
       const response = await axios.get("/api/admin/busses", {
         params: {
           bus_number: search.bus_number,
+          type_bus: search.type_bus,
           operator_name: search.operator_name,
           class_name: search.class_name,
           is_active: search.is_active,
@@ -100,11 +101,11 @@ const UserListPage = () => {
   };
 
   const handleCreate = () => {
-    router.push("/admin/master/buses/create");
+    router.push("/admin/master/bus/create");
   };
 
   const handleUpdate = (id: number) => {
-    router.push(`/admin/master/buses/update/${id}`);
+    router.push(`/admin/master/bus/update/${id}`);
   };
 
   const handleView = (id: number) => {
@@ -123,10 +124,15 @@ const UserListPage = () => {
     setIsAdvanceSearchBusOpen(false);
   };
 
-  const handleAdvanceSearchSubmit = (filters: React.SetStateAction<{ bus_number: string; operator_name: string; class_name: string; is_active: string }>) => {
+  const handleAdvanceSearchSubmit = (filters: React.SetStateAction<{ bus_number: string; operator_name: string; is_active: string }>) => {
     setSearch(filters);
     setIsAdvanceSearchBusOpen(false);
   };
+
+  const typebusOptions = [
+    { value: "SHD Bus", label: "SHD Bus" },
+    { value: "Mini Bus", label: "Mini Bus" },
+  ];
 
   const handleExport = () => {
     // Implementasikan logika untuk mengekspor data
@@ -148,6 +154,7 @@ const UserListPage = () => {
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-2">
             <InputForm label="Search By No. Bus" variant="text" name="bus_number" value={search.bus_number} onChange={handleSearchChange} />
+            <SelectForm label="Jenis Bus" id="type_bus" name="type_bus" value={search.type_bus} onChange={handleSelectChange} options={typebusOptions} />
             <SelectForm label="Kelas" id="class_name" name="class_name" value={search.class_name} onChange={handleSelectChange} options={classOptions} />
             <ActionButtonForm variant="cari" onClick={handleAdvanceSearchClick} />
             </div>
@@ -182,7 +189,7 @@ const UserListPage = () => {
           )}
         </CollapsibleCard>
       </div>
-      <AdvanceSearchUser
+      <AdvanceSearchBus
         isOpen={isAdvanceSearchBusOpen}
         onClose={handleAdvanceSearchClose}
         onSubmit={handleAdvanceSearchSubmit}
