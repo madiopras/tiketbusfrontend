@@ -12,6 +12,7 @@ import RadioFormGroup from "@/app/admin/components/RadioForm";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
 import BusLayoutSeat from "@/app/admin/components/BusLayoutSeat";
 import BusMiniLayoutSeat from "@/app/admin/components/BusMiniLayoutSeat";
+import BusVipLayoutSeat from "@/app/admin/components/BusVipLayoutSeat";
 
 
 interface ClassItem {
@@ -135,6 +136,7 @@ const UpdateBusesPage = () => {
   const typeBusOptions = [
     { value: "SHD Bus", label: "SHD Bus" },
     { value: "Mini Bus", label: "Mini Bus" },
+    { value: "VIP Bus", label: "VIP Bus" },
   ];
 
   const isActiveOptions = [
@@ -155,9 +157,9 @@ const UpdateBusesPage = () => {
                 name="bus_number"
                 value={buses.bus_number}
                 onChange={handleChange}
-                required
+                disabled
               />
-              <SelectForm label="Type Bus" id="type_bus" name="type_bus" value={buses.type_bus} onChange={handleChange} options={typeBusOptions} />
+              <SelectForm label="Type Bus" id="type_bus" name="type_bus" value={buses.type_bus} onChange={handleChange} options={typeBusOptions} disabled />
               <SelectForm label="Kelas Bus" id="class_id" name="class_id" value={buses.class_id} onChange={handleChange} options={classOptions} />
               <InputForm
                 label="Supir"
@@ -204,6 +206,8 @@ const UpdateBusesPage = () => {
               <BusMiniLayoutSeat seats={seats} />
             ) : buses.type_bus === "SHD Bus" ? (
               <BusLayoutSeat seats={seats} />
+            ) : buses.type_bus === "VIP Bus" ? (
+              <BusVipLayoutSeat seats={seats} />
             ) : (
               <p>Select a bus type to see the layout</p>
             )}

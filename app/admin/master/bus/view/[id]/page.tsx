@@ -10,6 +10,7 @@ import Loading from './loading';
 import SelectForm from '@/app/admin/components/SelectForm';
 import TextAreaForm from '@/app/admin/components/TextAreaForm';
 import RadioFormGroup from '@/app/admin/components/RadioForm';
+import BusMiniLayoutSeat from '@/app/admin/components/BusMiniLayoutSeat';
 
 const ViewBusesPage = () => {
     const [buses, setBuses] = useState({ bus_number: '', type_bus: '', capacity: '', operator_name: '', class_id: '', description: '', is_active: true });
@@ -118,7 +119,7 @@ const ViewBusesPage = () => {
           <div className="divider divider-neutral lg:divider-horizontal">Seat</div>
           <div className="card rounded-box grid flex-grow">
           {buses.type_bus === "Mini Bus" ? (
-              <BusMiniLayoutSeat seats={seats} />
+              <BusMiniLayoutSeat seats={10} />
             ) : buses.type_bus === "SHD Bus" ? (
               <BusLayoutSeat seats={seats} />
             ) : (
@@ -127,8 +128,7 @@ const ViewBusesPage = () => {
           </div>
         </div>
         <div className="flex justify-end space-x-4">
-          <ActionButtonForm variant="cancel" onClick={handleCancel} />
-          <ActionButtonForm variant="update" isLoading={isLoading} />
+          <ActionButtonForm variant="back" onClick={handleBack} />
         </div>
 
     </CollapsibleCard>

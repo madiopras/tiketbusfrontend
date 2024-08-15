@@ -12,6 +12,7 @@ import RadioFormGroup from "@/app/admin/components/RadioForm";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
 import BusLayoutSeat from "@/app/admin/components/BusLayoutSeat";
 import BusMiniLayoutSeat from "@/app/admin/components/BusMiniLayoutSeat";
+import BusVipLayoutSeat from "@/app/admin/components/BusVipLayoutSeat";
 
 interface ClassItem {
   id: string;
@@ -115,6 +116,7 @@ const CreateBusesPage: React.FC = () => {
   const typeBusOptions = [
     { value: "SHD Bus", label: "SHD Bus" },
     { value: "Mini Bus", label: "Mini Bus" },
+    { value: "VIP Bus", label: "VIP Bus" },
   ];
 
   const isActiveOptions = [
@@ -156,7 +158,7 @@ const CreateBusesPage: React.FC = () => {
                 value={buses.capacity}
                 onChange={handleChange}
                 required
-                disabled={buses.type_bus === "MINBUS"}
+                disabled={buses.type_bus === "Mini Bus"}
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -184,7 +186,9 @@ const CreateBusesPage: React.FC = () => {
               <BusMiniLayoutSeat seats={seats} />
             ) : buses.type_bus === "SHD Bus" ? (
               <BusLayoutSeat seats={seats} />
-            ) : (
+            ) : buses.type_bus === "VIP Bus" ? (
+              <BusVipLayoutSeat seats={seats} />
+            ): (
               <p>Select a bus type to see the layout</p>
             )}
           </div>
