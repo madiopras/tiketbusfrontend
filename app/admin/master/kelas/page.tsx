@@ -78,10 +78,10 @@ const ClassesListPage = () => {
   const handleCreate = () => {
     router.push("/admin/master/kelas/create");
   };
-
+  
   const handleUpdate = (id: number) => {
     router.push(`/admin/master/kelas/update/${id}`);
-  };
+  }; 
 
   const handleView = (id: number) => {
     router.push(`/admin/master/kelas/view/${id}`);

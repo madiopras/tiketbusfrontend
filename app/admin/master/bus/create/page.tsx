@@ -24,7 +24,7 @@ interface Bus {
   type_bus: string;
   operator_name: string;
   description: string;
-  capacity: string;
+  capacity: number;
   class_id: string;
   is_active: boolean;
 }
@@ -35,7 +35,7 @@ const CreateBusesPage: React.FC = () => {
     type_bus: "",
     operator_name: "",
     description: "",
-    capacity: "",
+    capacity: 0,
     class_id: "",
     is_active: true,
   });
@@ -66,24 +66,24 @@ const CreateBusesPage: React.FC = () => {
 
     if (name === "type_bus") {
       if (value === "Mini Bus") {
-        setBuses((prevState) => ({ ...prevState, type_bus: value, capacity: "10" }));
+        setBuses((prevState) => ({ ...prevState, type_bus: value, capacity: 10 }));
         setSeats(Array.from({ length: 10 }, (_, i) => i + 1));
       } else {
-        setBuses((prevState) => ({ ...prevState, type_bus: value, capacity: "" }));
+        setBuses((prevState) => ({ ...prevState, type_bus: value, capacity: 0 }));
         setSeats([]);
       }
     } else if (name === "capacity") {
-      const numericalValue = value.replace(/\D/g, ''); // Menghapus semua karakter non-digit
-      const newCapacity = parseInt(numericalValue, 10);
+      //const numericalValue = value.replace(/\D/g, ''); // Menghapus semua karakter non-digit
+      const newCapacity = parseInt(value, 10);
       if (!isNaN(newCapacity) && newCapacity > 0 && newCapacity <= 50) {
-        setBuses((prevState) => ({ ...prevState, [name]: numericalValue }));
+        setBuses((prevState) => ({ ...prevState, [name]: newCapacity }));
         const newSeats = [];
         for (let i = 0; i < newCapacity; i++) {
           newSeats.push(i + 1);
         }
         setSeats(newSeats);
       } else {
-        setBuses((prevState) => ({ ...prevState, [name]: '' }));
+        setBuses((prevState) => ({ ...prevState, [name]: 0 }));
         setSeats([]);
       }
     } else {
