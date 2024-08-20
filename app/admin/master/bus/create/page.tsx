@@ -22,7 +22,7 @@ interface ClassItem {
 interface Bus {
   bus_number: string;
   type_bus: string;
-  operator_name: string;
+  bus_name: string;
   description: string;
   capacity: number;
   class_id: string;
@@ -33,7 +33,7 @@ const CreateBusesPage: React.FC = () => {
   const [buses, setBuses] = useState<Bus>({
     bus_number: "",
     type_bus: "",
-    operator_name: "",
+    bus_name: "",
     description: "",
     capacity: 0,
     class_id: "",
@@ -139,14 +139,14 @@ const CreateBusesPage: React.FC = () => {
                 onChange={handleChange}
                 required
               />
-              <SelectForm label="Type Bus" id="type_bus" name="type_bus" value={buses.type_bus} onChange={handleChange} options={typeBusOptions} />
-              <SelectForm label="Kelas Bus" id="class_id" name="class_id" value={buses.class_id} onChange={handleChange} options={classOptions} />
+              <SelectForm label="Type Bus" id="type_bus" name="type_bus" value={buses.type_bus} onChange={handleChange} options={typeBusOptions} required />
+              <SelectForm label="Kelas Bus" id="class_id" name="class_id" value={buses.class_id} onChange={handleChange} options={classOptions} required />
               <InputForm
-                label="Supir"
+                label="Nama Bus"
                 variant="text"
-                id="operator_name"
-                name="operator_name"
-                value={buses.operator_name}
+                id="bus_name"
+                name="bus_name"
+                value={buses.bus_name}
                 onChange={handleChange}
                 required
               />

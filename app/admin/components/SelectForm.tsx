@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface Option {
   value: string;
@@ -17,6 +17,14 @@ interface CustomSelectProps {
 }
 
 const SelectForm: React.FC<CustomSelectProps> = React.memo(({ id, name, value, onChange, label, options, required = false, disabled = false }) => {
+  const [showError, setShowError] = useState(false);
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onChange?.(e);
+    // Periksa apakah value yang dipilih kosong dan select diharuskan
+    setShowError(required && e.target.value === ''); 
+  };
+
   return (
     <div className="form-control mb-2">
       <label className="label text-sm" htmlFor={id}>{label}</label>
@@ -24,18 +32,23 @@ const SelectForm: React.FC<CustomSelectProps> = React.memo(({ id, name, value, o
         id={id}
         name={name}
         value={value}
-        onChange={onChange}
-        className="select select-bordered select-sm"
+        onChange={handleSelectChange}
+        className={`select select-bordered select-sm ${showError ? 'select-error' : ''}`}
         required={required}
         disabled={disabled}
       >
-        <option value="">Select {label}</option>
+        <option value="">Select {label}</option> {/* Opsi default dengan value kosong */}
         {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
+      <div className="label">
+      {showError && (
+        <span className="label-text-alt text-error">Field ini wajib diisi</span>
+      )}
+      </div>
     </div>
   );
 });

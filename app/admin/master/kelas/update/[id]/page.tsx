@@ -9,6 +9,7 @@ import InputForm from "@/app/admin/components/InputForm";
 import RadioFormGroup from "@/app/admin/components/RadioForm";
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
+import Loading from "./loading";
 
 const UpdateClassesPage = () => {
   const [classes, setClasses] = useState({
@@ -22,7 +23,8 @@ const UpdateClassesPage = () => {
     has_wifi: true,
     has_snack: true,
   });
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoadingUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = useParams();
 
@@ -61,7 +63,7 @@ const UpdateClassesPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingUpdate(true);
     try {
       const token = Cookies.get("token");
       await axios.put(`/api/admin/classes/${id}`, classes, {
@@ -73,7 +75,7 @@ const UpdateClassesPage = () => {
     } catch (error) {
       console.error("Failed to update kelas", error);
     }
-    setLoading(false);
+    setLoadingUpdate(false);
   };
 
   const handleCancel = () => {
@@ -118,85 +120,89 @@ const UpdateClassesPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow container mx-auto p-4">
-        <CollapsibleCard title="Update User" defaultChecked={true}>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-3 gap-4">
-              <InputForm
-                label="Name"
-                variant="text"
-                id="class_name"
-                name="class_name"
-                value={classes.class_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <RadioFormGroup
-                label="AC"
-                name="has_ac"
-                value={classes.has_ac}
-                onChange={handleRadioChange}
-                options={isHasACOptions}
-              />
-              <RadioFormGroup
-                label="Toilet"
-                name="has_toilet"
-                value={classes.has_toilet}
-                onChange={handleRadioChange}
-                options={isHasToiletOptions}
-              />
-              <RadioFormGroup
-                label="TV"
-                name="has_tv"
-                value={classes.has_tv}
-                onChange={handleRadioChange}
-                options={isHasTVOptions}
-              />
-              <RadioFormGroup
-                label="Musik"
-                name="has_music"
-                value={classes.has_music}
-                onChange={handleRadioChange}
-                options={isHasMusicOptions}
-              />
-              <RadioFormGroup
-                label="Air Mineral"
-                name="has_air_mineral"
-                value={classes.has_air_mineral}
-                onChange={handleRadioChange}
-                options={isHasAirMineralOptions}
-              />
-              <RadioFormGroup
-                label="Wifi"
-                name="has_wifi"
-                value={classes.has_wifi}
-                onChange={handleRadioChange}
-                options={isHasWifiOptions}
-              />
-              <RadioFormGroup
-                label="Snack"
-                name="has_snack"
-                value={classes.has_snack}
-                onChange={handleRadioChange}
-                options={isHasSnackOptions}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <TextAreaForm
-                label="Description"
-                name="description"
-                value={classes.description}
-                onChange={handleChangeTextArea}
-                placeholder="Deskripsi Kelas Bus"
-              />
-            </div>
-            <div className="flex justify-end space-x-4">
-              <ActionButtonForm variant="cancel" onClick={handleCancel} />
-              <ActionButtonForm variant="update" isLoading={isLoading} />
-            </div>
-          </form>
-        </CollapsibleCard>
+        {loading ? (
+          <Loading />
+        ) : (
+          <CollapsibleCard title="Update User" defaultChecked={true}>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-3 gap-4">
+                <InputForm
+                  label="Name"
+                  variant="text"
+                  id="class_name"
+                  name="class_name"
+                  value={classes.class_name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <RadioFormGroup
+                  label="AC"
+                  name="has_ac"
+                  value={classes.has_ac}
+                  onChange={handleRadioChange}
+                  options={isHasACOptions}
+                />
+                <RadioFormGroup
+                  label="Toilet"
+                  name="has_toilet"
+                  value={classes.has_toilet}
+                  onChange={handleRadioChange}
+                  options={isHasToiletOptions}
+                />
+                <RadioFormGroup
+                  label="TV"
+                  name="has_tv"
+                  value={classes.has_tv}
+                  onChange={handleRadioChange}
+                  options={isHasTVOptions}
+                />
+                <RadioFormGroup
+                  label="Musik"
+                  name="has_music"
+                  value={classes.has_music}
+                  onChange={handleRadioChange}
+                  options={isHasMusicOptions}
+                />
+                <RadioFormGroup
+                  label="Air Mineral"
+                  name="has_air_mineral"
+                  value={classes.has_air_mineral}
+                  onChange={handleRadioChange}
+                  options={isHasAirMineralOptions}
+                />
+                <RadioFormGroup
+                  label="Wifi"
+                  name="has_wifi"
+                  value={classes.has_wifi}
+                  onChange={handleRadioChange}
+                  options={isHasWifiOptions}
+                />
+                <RadioFormGroup
+                  label="Snack"
+                  name="has_snack"
+                  value={classes.has_snack}
+                  onChange={handleRadioChange}
+                  options={isHasSnackOptions}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <TextAreaForm
+                  label="Description"
+                  name="description"
+                  value={classes.description}
+                  onChange={handleChangeTextArea}
+                  placeholder="Deskripsi Kelas Bus"
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <ActionButtonForm variant="cancel" onClick={handleCancel} />
+                <ActionButtonForm variant="update" isLoading={isLoading} />
+              </div>
+            </form>
+          </CollapsibleCard>
+        )}
       </div>
     </div>
   );

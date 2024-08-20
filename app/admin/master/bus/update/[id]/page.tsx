@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import axios from "@/lib/axios";
 import Cookies from 'js-cookie';
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
+import Loading from "./loading";
 import CollapsibleCard from "@/app/admin/components/CollapsibleCard";
 import InputForm from "@/app/admin/components/InputForm";
 import SelectForm from "@/app/admin/components/SelectForm";
@@ -23,7 +24,7 @@ interface ClassItem {
 interface Bus {
   bus_number: string;
   type_bus: string;
-  operator_name: string;
+  bus_name: string;
   description: string;
   capacity: number;
   class_id: string;
@@ -34,7 +35,7 @@ const UpdateBusesPage = () => {
   const [buses, setBuses] = useState<Bus>({
     bus_number: "",
     type_bus: "",
-    operator_name: "",
+    bus_name: "",
     description: "",
     capacity: 0,
     class_id: "",
@@ -42,7 +43,8 @@ const UpdateBusesPage = () => {
   });
   const [classOptions, setClassOptions] = useState<{ label: string; value: string }[]>([]);
   const [seats, setSeats] = useState<number[]>([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoadingUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = useParams();
 
@@ -76,6 +78,18 @@ const UpdateBusesPage = () => {
     fetchBuses();
     fetchClassNames();
   }, [fetchBuses, fetchClassNames]);
+
+  // useEffect baru untuk mengupdate state 'seats' berdasarkan data dari database
+  useEffect(() => {
+    // Jika data bus sudah terisi dan memiliki kapasitas
+    if (buses && buses.capacity) {
+      const newSeats = Array.from({ length: buses.capacity }, (_, i) => i + 1);
+      setSeats(newSeats);
+    } else {
+      // Jika tidak ada data atau kapasitas 0, kosongkan seats
+      setSeats([]);
+    }
+  }, [buses]); // Jalankan useEffect setiap kali 'buses' berubah
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -114,7 +128,7 @@ const UpdateBusesPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingUpdate(true);
     try {
       const token = Cookies.get('token'); 
       await axios.put(`/api/admin/busses/${id}`, buses, {
@@ -126,7 +140,7 @@ const UpdateBusesPage = () => {
     } catch (error) {
       console.error("Failed to update bus", error);
     }
-    setLoading(false);
+    setLoadingUpdate(false);
   };
 
   const handleCancel = () => {
@@ -146,7 +160,11 @@ const UpdateBusesPage = () => {
 
   return (
     <CollapsibleCard title="Edit Bus" defaultChecked={true}>
-      <form onSubmit={handleSubmit}>
+      {loading ? (
+        <Loading />
+      ) : (
+
+        <form onSubmit={handleSubmit}>
         <div className="flex w-full flex-col lg:flex-row">
           <div className="card rounded-box grid flex-grow">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -160,13 +178,13 @@ const UpdateBusesPage = () => {
                 disabled
               />
               <SelectForm label="Type Bus" id="type_bus" name="type_bus" value={buses.type_bus} onChange={handleChange} options={typeBusOptions} disabled />
-              <SelectForm label="Kelas Bus" id="class_id" name="class_id" value={buses.class_id} onChange={handleChange} options={classOptions} />
+              <SelectForm label="Kelas Bus" id="class_id" name="class_id" value={buses.class_id} onChange={handleChange} options={classOptions} required />
               <InputForm
-                label="Supir"
+                label="Nama Bus"
                 variant="text"
-                id="operator_name"
-                name="operator_name"
-                value={buses.operator_name}
+                id="bus_name"
+                name="bus_name"
+                value={buses.bus_name}
                 onChange={handleChange}
                 required
               />
@@ -218,6 +236,9 @@ const UpdateBusesPage = () => {
           <ActionButtonForm variant="update" isLoading={isLoading} />
         </div>
       </form>
+        
+      )}
+      
     </CollapsibleCard>
   );
 };

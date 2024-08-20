@@ -3,12 +3,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axios from "@/lib/axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import CollapsibleCard from "@/app/admin/components/CollapsibleCard";
 import InputForm from "@/app/admin/components/InputForm";
 import SelectForm from "@/app/admin/components/SelectForm";
 import RadioFormGroup from "@/app/admin/components/RadioForm";
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
+import Loading from "./loading";
 
 const UpdateUserPage = () => {
   const [user, setUser] = useState({
@@ -20,7 +21,8 @@ const UpdateUserPage = () => {
     role: "",
     is_active: true,
   });
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoadingUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = useParams();
 
@@ -54,9 +56,9 @@ const UpdateUserPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingUpdate(true);
     try {
-      const token = Cookies.get('token'); 
+      const token = Cookies.get("token");
       await axios.put(`/api/admin/users/${id}`, user, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,7 +68,7 @@ const UpdateUserPage = () => {
     } catch (error) {
       console.error("Failed to update user", error);
     }
-    setLoading(false);
+    setLoadingUpdate(false);
   };
 
   const handleCancel = () => {
@@ -92,77 +94,81 @@ const UpdateUserPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow container mx-auto p-4">
-        <CollapsibleCard title="Update User" defaultChecked={true}>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-3 gap-4">
-              <InputForm
-                label="Name"
-                variant="text"
-                id="name"
-                name="name"
-                value={user.name}
-                onChange={handleChange}
-                required
-              />
-              <InputForm
-                label="Email"
-                variant="email"
-                id="email"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-                disabled={true}
-              />
-              <InputForm
-                label="Phone"
-                variant="text"
-                id="phone_number"
-                name="phone_number"
-                value={user.phone_number}
-                onChange={handleChange}
-                disabled={true}
-              />
-              <SelectForm
-                label="Gender"
-                id="gender"
-                name="gender"
-                value={user.gender}
-                onChange={handleChange}
-                options={genderOptions}
-                required
-              />
-              <SelectForm
-                label="Role"
-                id="role"
-                name="role"
-                value={user.role}
-                onChange={handleChange}
-                options={roleOptions}
-                required
-              />
-              <InputForm
-                label="Password"
-                variant="password"
-                id="password"
-                name="password"
-                value={user.password}
-                onChange={handleChange}
-                required
-              />
-              <RadioFormGroup
-                label="Is Active"
-                name="is_active"
-                value={user.is_active}
-                onChange={handleRadioChange}
-                options={isActiveOptions}
-              />
-            </div>
-            <div className="flex justify-end space-x-4">
-              <ActionButtonForm variant="cancel" onClick={handleCancel} />
-              <ActionButtonForm variant="update" isLoading={isLoading} />
-            </div>
-          </form>
-        </CollapsibleCard>
+        {loading ? (
+          <Loading />
+        ) : (
+          <CollapsibleCard title="Update User" defaultChecked={true}>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-3 gap-4">
+                <InputForm
+                  label="Name"
+                  variant="text"
+                  id="name"
+                  name="name"
+                  value={user.name}
+                  onChange={handleChange}
+                  required
+                />
+                <InputForm
+                  label="Email"
+                  variant="email"
+                  id="email"
+                  name="email"
+                  value={user.email}
+                  onChange={handleChange}
+                  disabled={true}
+                />
+                <InputForm
+                  label="Phone"
+                  variant="text"
+                  id="phone_number"
+                  name="phone_number"
+                  value={user.phone_number}
+                  onChange={handleChange}
+                  disabled={true}
+                />
+                <SelectForm
+                  label="Gender"
+                  id="gender"
+                  name="gender"
+                  value={user.gender}
+                  onChange={handleChange}
+                  options={genderOptions}
+                  required
+                />
+                <SelectForm
+                  label="Role"
+                  id="role"
+                  name="role"
+                  value={user.role}
+                  onChange={handleChange}
+                  options={roleOptions}
+                  required
+                />
+                <InputForm
+                  label="Password"
+                  variant="password"
+                  id="password"
+                  name="password"
+                  value={user.password}
+                  onChange={handleChange}
+                  required
+                />
+                <RadioFormGroup
+                  label="Is Active"
+                  name="is_active"
+                  value={user.is_active}
+                  onChange={handleRadioChange}
+                  options={isActiveOptions}
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <ActionButtonForm variant="cancel" onClick={handleCancel} />
+                <ActionButtonForm variant="update" isLoading={isLoading} />
+              </div>
+            </form>
+          </CollapsibleCard>
+        )}
       </div>
     </div>
   );

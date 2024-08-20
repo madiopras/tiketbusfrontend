@@ -8,7 +8,7 @@ interface Bus {
   id: number;
   bus_number: string;
   type_bus: string;
-  operator_name: string;
+  bus_name: string;
   class_name: string;
   capacity: number;
 }
@@ -64,9 +64,9 @@ const BusTable: React.FC<BusTableProps> = ({
           <tr>
             <th>No</th>
             <th>Bus Number</th>
+            <th>Nama Bus</th>
             <th>Jenis Bus</th>
             <th>Kelas</th>
-            <th>Supir</th>
             <th>Kursi</th>
             <th>Action</th>
           </tr>
@@ -76,9 +76,9 @@ const BusTable: React.FC<BusTableProps> = ({
             <tr key={bus.id} className="hover">
               <td>{(page - 1) * 10 + index + 1}</td>
               <td>{bus.bus_number}</td>
+              <td>{bus.bus_name}</td>
               <td>{bus.type_bus}</td>
               <td>{bus.class_name}</td>
-              <td>{bus.operator_name}</td>
               <td>{bus.capacity}</td>
               <td>
                 <ActionButton variant="edit" onClick={() => handleUpdate(bus.id)} />

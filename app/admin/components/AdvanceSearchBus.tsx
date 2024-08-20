@@ -11,7 +11,7 @@ interface AdvanceSearchBusProps {
 }
 
 const AdvanceSearchBus: React.FC<AdvanceSearchBusProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [filters, setFilters] = useState({ bus_number: '', operator_name: '', class_name: '', is_active: true });
+  const [filters, setFilters] = useState({ bus_number: '', bus_name: '', class_name: '', is_active: true });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -47,7 +47,7 @@ const AdvanceSearchBus: React.FC<AdvanceSearchBusProps> = ({ isOpen, onClose, on
     >
       <div className="grid grid-cols-2 gap-4">
       <InputForm label="Bus Number" variant="text" name="bus_number" value={filters.bus_number} onChange={handleChange} />
-      <InputForm label="Supir" variant="text" name="operator_name" value={filters.operator_name} onChange={handleChange} />
+      <InputForm label="Nama Bus" variant="text" name="bus_name" value={filters.bus_name} onChange={handleChange} />
       </div>
       
       <RadioFormGroup

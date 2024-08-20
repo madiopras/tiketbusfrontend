@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface TextInputProps {
   variant: 'text' | 'email' | 'password';
@@ -34,6 +34,16 @@ const InputForm: React.FC<CustomInputProps> = React.memo(({
   disabled = false,
   required = false
 }) => {
+  const [showError, setShowError] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e);
+  
+    // Periksa apakah value kosong atau 0, dan input required
+    const isEmptyOrZero = !e.target.value || (variant === 'number' && parseInt(e.target.value, 10) === 0);
+    setShowError(required && isEmptyOrZero); 
+  };
+
   return (
     <div className="form-control mb-2">
       <label className="label text-sm" htmlFor={id}>{label}</label>
@@ -42,11 +52,18 @@ const InputForm: React.FC<CustomInputProps> = React.memo(({
         id={id}
         name={name}
         value={variant === 'number' ? (value as number).toString() : value as string}
-        onChange={onChange}
-        className="input input-sm input-bordered"
+        onChange={handleInputChange}
+        className={`input input-sm input-bordered ${showError ? 'input-error' : ''}`} // Tambahkan class error jika diperlukan
         required={required}
         disabled={disabled}
       />
+      <div className="label">
+      {showError && (
+        <span className="label-text-alt text-error">Field ini wajib diisi</span>
+      )}
+      </div>
+
+      
     </div>
   );
 });
