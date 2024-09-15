@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 interface Option {
-  value: string;
+  value: string | number;
   label: string;
 }
 
 interface CustomSelectProps {
   id?: string;
   name: string;
-  value: string;
+  value: string | number;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: Option[];

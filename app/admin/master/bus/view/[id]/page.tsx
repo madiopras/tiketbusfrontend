@@ -88,6 +88,7 @@ const ViewBusesPage = () => {
   const typeBusOptions = [
     { value: "SHD Bus", label: "SHD Bus" },
     { value: "Mini Bus", label: "Mini Bus" },
+    { value: "VIP Bus", label: "VIP Bus" },
   ];
 
   const isActiveOptions = [

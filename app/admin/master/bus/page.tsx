@@ -13,7 +13,7 @@ import ActionButtonForm from "../../components/ActionButtonForm";
 import SelectForm from "../../components/SelectForm";
 import AdvanceSearchBus from "../../components/AdvanceSearchBus";
 
-const UserListPage = () => {
+const BusListPage = () => {
   const [buses, setBuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState({
@@ -230,4 +230,4 @@ const UserListPage = () => {
   );
 };
 
-export default UserListPage;
+export default BusListPage;

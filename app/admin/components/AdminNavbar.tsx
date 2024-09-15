@@ -19,6 +19,12 @@ const AdminNavbar = ({ handleLogout }: { handleLogout: () => void }) => {
         return "Home";
       case "/admin/master/kelas":
         return "Manajemen Kelas Bus";
+      case "/admin/master/kelas/create":
+        return "Manajemen Kelas Bus - Create";
+        case "/admin/master/location":
+          return "Manajemen Lokasi Bus";
+        case "/admin/master/location/create":
+          return "Manajemen Lokasi Bus - Create";
       case "/admin/master/users":
         return "Manajemen User";
         case "/admin/master/bus":
