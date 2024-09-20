@@ -8,40 +8,35 @@ import Loading from "./loading";
 import ActionButtonHeader from "../../components/ActionButtonHeader";
 import CollapsibleCard from "../../components/CollapsibleCard";
 import InputForm from "../../components/InputForm";
-import RutesTable from "../../components/TableRutes";
+import SdaysTable from "../../components/TableSdays";
 
-const RuteListPage = () => {
-  const [rutes, setRutes] = useState([]);
+
+const SpecialDaysListPage = () => {
+  const [sdays, setSdays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState({
-    start_location: "",
-    end_location: "",
-    distance: "",
-    price: "",
+    name: ""
   });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const router = useRouter();
 
-  const fetchRutes = useCallback(async () => {
+  const fetchsdays = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/admin/routes", {
+      const response = await axios.get("/api/admin/sdays", {
         params: {
-          start_location: search.start_location,
-          end_location: search.end_location,
-          distance: search.distance,
-          price: search.price,
+          name: search.name,
           page: page,
           limit: 10,
         },
       });
-      setRutes(response.data.data);
+      setSdays(response.data.data);
       setTotalPages(response.data.total_pages);
       setTotalItems(response.data.total_items);
     } catch (error) {
-      console.error("Failed to fetch rutes", error);
+      console.error("Failed to fetch sdays", error);
     }
     setLoading(false);
   }, [search, page]);
@@ -49,11 +44,11 @@ const RuteListPage = () => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchRutes();
+      fetchsdays();
     }, 2000);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, search, fetchRutes]);
+  }, [page, search, fetchsdays]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,27 +58,27 @@ const RuteListPage = () => {
   const confirmDelete = async (id: number) => {
     try {
       const token = Cookies.get("token");
-      await axios.delete(`/api/admin/routes/${id}`, {
+      await axios.delete(`/api/admin/sdays/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchRutes();
+      fetchsdays();
     } catch (error) {
-      console.error("Failed to delete rute", error);
+      console.error("Failed to delete Special Days", error);
     }
   };
 
   const handleCreate = () => {
-    router.push("/admin/master/rutes/create");
+    router.push("/admin/master/specialdays/create");
   };
 
   const handleUpdate = (id: number) => {
-    router.push(`/admin/master/rutes/update/${id}`);
+    router.push(`/admin/master/specialdays/update/${id}`);
   };
 
   const handleView = (id: number) => {
-    router.push(`/admin/master/rutes/view/${id}`);
+    router.push(`/admin/master/specialdays/view/${id}`);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -107,21 +102,14 @@ const RuteListPage = () => {
       <div className="flex-grow container mx-auto p-2">
         {/* Header Filter */}
         {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-        <CollapsibleCard title="Filter Rute" defaultChecked={true}>
+        <CollapsibleCard title="Filter Special Days" defaultChecked={true}>
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-2">
               <InputForm
-                label="Asal"
+                label="Special Days"
                 variant="text"
-                name="start_location"
-                value={search.start_location}
-                onChange={handleSearchChange}
-              />
-              <InputForm
-                label="Tujuan"
-                variant="text"
-                name="end_location"
-                value={search.end_location}
+                name="name"
+                value={search.name}
                 onChange={handleSearchChange}
               />
             </div>
@@ -129,7 +117,7 @@ const RuteListPage = () => {
         </CollapsibleCard>
 
         {/* Body Table */}
-        <CollapsibleCard title="Rute List" defaultChecked={true}>
+        <CollapsibleCard title="Special Days List" defaultChecked={true}>
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-2">
               <ActionButtonHeader variant="create" onClick={handleCreate} />
@@ -143,8 +131,8 @@ const RuteListPage = () => {
           {loading ? (
             <Loading />
           ) : (
-            <RutesTable
-              rutes={rutes}
+            <SdaysTable
+              sdays={sdays}
               page={page}
               totalPages={totalPages}
               totalItems={totalItems}
@@ -160,4 +148,4 @@ const RuteListPage = () => {
   );
 };
 
-export default RuteListPage;
+export default SpecialDaysListPage;

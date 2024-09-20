@@ -8,7 +8,7 @@ interface Rute {
   id: number;
   start_location: string;
   end_location: string;
-  distance: string;
+  distance: number;
   price: number;
 }
 

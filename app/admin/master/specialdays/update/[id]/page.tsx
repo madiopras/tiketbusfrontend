@@ -1,143 +1,202 @@
 "use client";
 
-import React, { useState, useCallback, useEffect, ChangeEvent, FormEvent } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+} from "react";
 import { useRouter, useParams } from "next/navigation";
 import axios from "@/lib/axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
 import Loading from "./loading";
 import CollapsibleCard from "@/app/admin/components/CollapsibleCard";
 import InputForm from "@/app/admin/components/InputForm";
-import SelectForm from "@/app/admin/components/SelectForm";
+import RadioFormGroup from "@/app/admin/components/RadioForm";
+import TextAreaForm from "@/app/admin/components/TextAreaForm";
+import DateRangePicker from "@/app/admin/components/SelectDateRange";
 
-
-interface LocationItem {
-  id: number;
+interface Sdays {
   name: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  price_percentage: number;
+  is_increase: boolean;
+  is_active: boolean;
 }
 
-interface Rute {
-  start_location_id: number;
-  end_location_id: number;
-  distance: number;
-  price: number;
-}
-
-const UpdateRutesPage = () => {
-  const [rutes, setRutes] = useState<Rute>({
-    start_location_id: 0,
-    end_location_id: 0,
-    distance: 0,
-    price: 0
+const UpdateSdaysPage = () => {
+  const [sdays, setSdays] = useState<Sdays>({
+    name: "",
+    start_date: "",
+    end_date: "",
+    description: "",
+    price_percentage: 0,
+    is_increase: true,
+    is_active: true,
   });
-  const [locationOptions, setLocationOption] = useState<{ label: string; value: number }[]>([]);
   const [isLoading, setLoadingUpdate] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = useParams();
 
-
-  const fetchLocationNames= useCallback(async () => {
-    try {
-      const response = await axios.get<{ data: LocationItem[] }>("/api/admin/locations");
-      const formattedlocationOptions = response.data.data.map((LocationItem) => ({
-        label: LocationItem.name,
-        value: LocationItem.id,
-      }));
-      setLocationOption(formattedlocationOptions);
-    } catch (error) {
-      console.error("Failed to fetch Location", error);
-    }
-  }, []);
-
-  const fetchRutes = useCallback(async () => {
+  const fetchSdays = useCallback(async () => {
     if (!id) return;
     setLoading(true);
     try {
-      const response = await axios.get(`/api/admin/routes/${id}`);
-      setRutes(response.data);
+      const response = await axios.get(`/api/admin/sdays/${id}`);
+      setSdays(response.data);
     } catch (error) {
-      console.error("Failed to fetch rutes", error);
+      console.error("Failed to fetch special days", error);
     }
     setLoading(false);
   }, [id]);
 
   useEffect(() => {
-    fetchRutes();
-    fetchLocationNames();
-  }, [fetchRutes, fetchLocationNames]);
+    fetchSdays();
+  }, [fetchSdays, id]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setRutes((prevState) => ({ ...prevState, [name]: value }));
-    
+    setSdays((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSdays((prevState) => ({ ...prevState, [name]: value === "true" }));
+  };
+
+  const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setSdays((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleStartDateChange = (date: Date | null) => {
+    if (date) {
+      setSdays((prevState) => ({
+        ...prevState,
+        start_date: date.toISOString(),
+      }));
+    }
+  };
+
+  const handleEndDateChange = (date: Date | null) => {
+    if (date) {
+      setSdays((prevState) => ({
+        ...prevState,
+        end_date: date.toISOString(),
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoadingUpdate(true);
     try {
-      const token = Cookies.get('token'); 
-      await axios.put(`/api/admin/routes/${id}`, rutes, {
+      const token = Cookies.get("token");
+      await axios.put(`/api/admin/sdays/${id}`, sdays, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      router.push("/admin/master/rutes");
+      router.push("/admin/master/specialdays");
     } catch (error) {
-      console.error("Failed to update rute", error);
+      console.error("Failed to update special days", error);
     }
     setLoadingUpdate(false);
   };
 
   const handleCancel = () => {
-    router.push("/admin/master/rutes");
+    router.push("/admin/master/specialdays");
   };
 
-
+  const isIncrease = [
+    { label: "Markup", value: true },
+    { label: "Diskon", value: false },
+  ];
+  const isActive = [
+    { label: "Ya", value: true },
+    { label: "Tidak", value: false },
+  ];
 
   return (
-    <CollapsibleCard title="Edit Rute" defaultChecked={true}>
+    <CollapsibleCard title="Edit Special Days" defaultChecked={true}>
       {loading ? (
         <Loading />
       ) : (
         <form onSubmit={handleSubmit}>
-        <div className="flex w-full flex-col lg:flex-row">
-          <div className="card rounded-box grid flex-grow">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <SelectForm label="Lokasi Awal" id="start_location_id" name="start_location_id" value={rutes.start_location_id} onChange={handleChange} options={locationOptions} required />
-              <SelectForm label="Tujuan" id="end_location_id" name="end_location_id" value={rutes.end_location_id} onChange={handleChange} options={locationOptions} required />
-              <InputForm
-                label="Jarak"
-                variant="number"
-                id="distance"
-                name="distance"
-                value={rutes.distance}
-                onChange={handleChange}
-                required
-              />
-              <InputForm
-                label="Harga"
-                variant="number"
-                id="price"
-                name="price"
-                value={rutes.price}
-                onChange={handleChange}
-                required
-              />
+          <div className="flex w-full flex-col lg:flex-row">
+            <div className="card rounded-box grid flex-grow">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <InputForm
+                  label="Special Days"
+                  variant="text"
+                  id="name"
+                  name="name"
+                  value={sdays.name}
+                  onChange={handleChange}
+                  required
+                />
+                <DateRangePicker
+                  label="Aktif Special Days"
+                  required
+                  startDate={sdays.start_date ? new Date(sdays.start_date) : null}
+                  endDate={sdays.end_date ? new Date(sdays.end_date) : null}
+                  onStartDateChange={handleStartDateChange}
+                  onEndDateChange={handleEndDateChange}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <InputForm
+                  label="Persentase"
+                  variant="number"
+                  id="price_percentage"
+                  name="price_percentage"
+                  value={sdays.price_percentage}
+                  onChange={handleChange}
+                  required
+                />
+                <RadioFormGroup
+                  label="Type"
+                  name="is_increase"
+                  value={sdays.is_increase}
+                  onChange={handleRadioChange}
+                  options={isIncrease}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <TextAreaForm
+                  label="Description"
+                  name="description"
+                  value={sdays.description}
+                  onChange={handleChangeTextArea}
+                  placeholder="Deskripsi Special Days"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <RadioFormGroup
+                  label="Is Active"
+                  name="is_active"
+                  value={sdays.is_active}
+                  onChange={handleRadioChange}
+                  options={isActive}
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <ActionButtonForm variant="cancel" onClick={handleCancel} />
+                <ActionButtonForm variant="update" isLoading={isLoading} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex justify-end space-x-4">
-          <ActionButtonForm variant="cancel" onClick={handleCancel} />
-          <ActionButtonForm variant="update" isLoading={isLoading} />
-        </div>
-      </form>
-        
+        </form>
       )}
-      
     </CollapsibleCard>
   );
 };
 
-export default UpdateRutesPage;
+export default UpdateSdaysPage;

@@ -11,6 +11,10 @@ import Loading from "./loading";
 import Cookies from "js-cookie";
 import axios from "@/lib/axios";
 import { Bars3Icon } from "@heroicons/react/16/solid";
+import { setDefaultOptions } from 'date-fns';
+import {id} from 'date-fns/locale/id'; 
+
+setDefaultOptions({ locale: id }); 
 
 
   export default function RootLayout({children} : {
