@@ -10,7 +10,7 @@ import ActionButtonHeader from "../../components/ActionButtonHeader";
 import CollapsibleCard from "../../components/CollapsibleCard";
 import InputForm from "../../components/InputForm";
 
-const locationsListPage = () => {
+const LocationsListPage = () => {
   const [users, setUlocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState({ name: "", address: "" });
@@ -157,4 +157,4 @@ const locationsListPage = () => {
   );
 };
 
-export default locationsListPage;
+export default LocationsListPage;
