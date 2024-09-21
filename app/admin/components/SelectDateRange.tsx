@@ -18,8 +18,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   label,
   onStartDateChange,
   onEndDateChange,
-  startDate: initialStartDate, // Ubah nama prop menjadi initialStartDate
-  endDate: initialEndDate,   // Ubah nama prop menjadi initialEndDate
+  startDate: initialStartDate = null, // Ubah nama prop menjadi initialStartDate
+  endDate: initialEndDate = null,   // Ubah nama prop menjadi initialEndDate
   required = false,
   disabled = false,
 }) => {
