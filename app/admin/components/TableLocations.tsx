@@ -4,14 +4,14 @@ import ActionButton from './ActionButton';
 import Pagination from './Pagination';
 import ConfirmModal from './ConfirmModal';
 
-interface locations {
+interface Locations {
   id: number;
   name: string;
   address: string;
 }
 
-interface locationsTableProps {
-  locations: locations[];
+interface LocationsTableProps {
+  locations: Locations[];
   page: number;
   totalPages: number;
   totalItems: number;
@@ -21,7 +21,7 @@ interface locationsTableProps {
   handlePageChange: (page: number) => void;
 }
 
-const locationsTable: React.FC<locationsTableProps> = ({
+const LocationsTable: React.FC<LocationsTableProps> = ({
   locations,
   page,
   totalPages,
@@ -92,4 +92,4 @@ const locationsTable: React.FC<locationsTableProps> = ({
   );
 };
 
-export default locationsTable;
+export default LocationsTable;
