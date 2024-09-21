@@ -1,16 +1,16 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
 import { UserProvider } from "../admin/context/UserContext";
 import AdminNavbar from "./components/AdminNavbar";
 import AdminSidebar from "./components/AdminSidebar";
 import AdminFooter from "./components/AdminFooter";
-import { Suspense } from "react";
-import Loading from "./loading";
+
+
 import Cookies from "js-cookie";
 import axios from "@/lib/axios";
-import { Bars3Icon } from "@heroicons/react/16/solid";
+
 import { setDefaultOptions } from 'date-fns';
 import {id} from 'date-fns/locale/id'; 
 

@@ -130,7 +130,9 @@ const BusListPage = () => {
   const handleAdvanceSearchSubmit = (
     filters: React.SetStateAction<{
       bus_number: string;
+      type_bus: string;
       bus_name: string;
+      class_name: string;
       is_active: string;
     }>
   ) => {
