@@ -28,11 +28,6 @@ const AdvanceSearchBus: React.FC<AdvanceSearchBusProps> = ({ isOpen, onClose, on
     onClose(); // Close the modal after submitting
   };
 
-  const genderOptions = [
-    { value: "pria", label: "Pria" },
-    { value: "wanita", label: "Wanita" },
-  ];
-
   const isActiveOptions = [
     { label: "Active", value: true },
     { label: "Inactive", value: false },

@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname} from "next/navigation";
 import { useUser } from "../context/UserContext";
 import {
   Bars3Icon,
-  BellAlertIcon,
-  HandThumbDownIcon,
 } from "@heroicons/react/16/solid";
+import Image from "next/image";
+import logo from "../../logo1.png";
 
 const AdminNavbar = ({ handleLogout }: { handleLogout: () => void }) => {
   const { user } = useUser();
@@ -56,10 +55,8 @@ const AdminNavbar = ({ handleLogout }: { handleLogout: () => void }) => {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
+              
+              <Image src={logo} alt="Logo" />
             </div>
           </div>
           <ul

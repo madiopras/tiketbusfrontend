@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import useSWR from 'swr';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../logo1.png'; // Sesuaikan path logo jika perlu
