@@ -5,9 +5,10 @@ import "react-datepicker/dist/react-datepicker.css";
 interface DateRangePickerProps {
   idate?: string;
   label: string;
+  startDate?: Date | null; // Menambahkan properti startDate
+  endDate?: Date | null;   // Menambahkan properti endDate
   onStartDateChange?: (date: Date | null) => void;
   onEndDateChange?: (date: Date | null) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean; // Menambahkan properti required (opsional)
   disabled?: boolean; // Menambahkan properti disabled (opsional)
 }
@@ -24,7 +25,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
-
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
@@ -32,6 +32,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setStartDate(initialStartDate);
     setEndDate(initialEndDate);
   }, [initialStartDate, initialEndDate]);
+
+  useEffect(() => {
+    // Memperbarui status error berdasarkan startDate dan endDate
+    setShowError(required && (!startDate || !endDate));
+  }, [startDate, endDate, required]);
 
   const handleDateChange = (date: Date | null, isStartDate: boolean) => {
     if (isStartDate) {
@@ -46,8 +51,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       setEndDate(date);
       onEndDateChange?.(date); // Optional chaining
     }
-
-    setShowError(required && (!startDate || !endDate));
   };
 
   return (
