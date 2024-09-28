@@ -48,38 +48,37 @@ const CreateLocationsPage = () => {
   };
 
   return (
-    
-      
-        <CollapsibleCard title="Create Locations" defaultChecked={true}>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-3 gap-4">
-              <InputForm
-                label="Name"
-                variant="text"
-                id="name"
-                name="name"
-                value={Locations.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <TextAreaForm
-                label="address"
-                name="address"
-                value={Locations.address}
-                onChange={handleChangeTextArea}
-                placeholder="Deskripsi location Bus"
-              />
-            </div>
-            <div className="flex justify-end space-x-4">
-              <ActionButtonForm variant="cancel" onClick={handleCancel} />
-              <ActionButtonForm variant="submit" isLoading={isLoading} />
-            </div>
-          </form>
-        </CollapsibleCard>
-    
+    <div>
+      <CollapsibleCard title="Create Locations" defaultChecked={true}>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputForm
+            label="Name"
+            variant="text"
+            id="name"
+            name="name"
+            value={Locations.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <TextAreaForm
+            label="address"
+            name="address"
+            value={Locations.address}
+            onChange={handleChangeTextArea}
+            placeholder="Deskripsi location Bus"
+          />
+        </div>
+        <div className="flex justify-end space-x-4">
+          <ActionButtonForm variant="cancel" onClick={handleCancel} />
+          <ActionButtonForm variant="submit" isLoading={isLoading} />
+        </div>
+      </form>
+    </CollapsibleCard>
+    </div>
     
   );
 };

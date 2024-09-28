@@ -1,11 +1,11 @@
-// components/SdaysTable.tsx
+// components/ScheduleTable.tsx
 import React, { useState } from 'react';
 import ActionButton from './ActionButton';
 import Pagination from './Pagination';
 import ConfirmModal from './ConfirmModal';
 import {TglOnly} from '@/lib/utils'
 
-interface Sdays {
+interface Schedule {
   id: number;
   name: string;
   start_date: string;
@@ -14,8 +14,8 @@ interface Sdays {
   is_increase: boolean;
 }
 
-interface SdaysTableProps {
-  sdays: Sdays[];
+interface ScheduleTableProps {
+  schedule: Schedule[];
   page: number;
   totalPages: number;
   totalItems: number;
@@ -25,8 +25,8 @@ interface SdaysTableProps {
   handlePageChange: (page: number) => void;
 }
 
-const SdaysTable: React.FC<SdaysTableProps> = ({
-  sdays,
+const ScheduleTable: React.FC<ScheduleTableProps> = ({
+  schedule,
   page,
   totalPages,
   totalItems, 
@@ -36,31 +36,31 @@ const SdaysTable: React.FC<SdaysTableProps> = ({
   handlePageChange,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedSdaysId, setSelectedSdaysId] = useState<number | null>(null);
+  const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(null);
   const [nameToDelete, setNameToDelete] = useState<string | null>(null);
 
   const handleDeleteClick = (id: number, name: string) => {
-    setSelectedSdaysId(id);
+    setSelectedScheduleId(id);
     setNameToDelete(name);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedSdaysId(null);
+    setSelectedScheduleId(null);
   };
 
   const handleConfirmDelete = () => {
-    if (selectedSdaysId !== null) {
-      confirmDelete(selectedSdaysId);
+    if (selectedScheduleId !== null) {
+      confirmDelete(selectedScheduleId);
     }
     setIsModalOpen(false);
-    setSelectedSdaysId(null);
+    setSelectedScheduleId(null);
   };
 
   return (
-    <div className="overflow-x-auto bg-base-100 shadow-lg rounded-md p-4">
-      <table className="table table-sm w-full mb-4">
+    <div className="overflow-x-auto">
+      <table className="table table-sm w-full">
         <thead>
           <tr>
             <th>No</th>
@@ -73,18 +73,18 @@ const SdaysTable: React.FC<SdaysTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {sdays.map((Sdays, index) => (
-            <tr key={Sdays.id} className="hover">
+          {schedule.map((Schedule, index) => (
+            <tr key={Schedule.id} className="hover">
               <td>{(page - 1) * 10 + index + 1}</td>
-              <td>{Sdays.name}</td>
-              <td>{TglOnly(Sdays.start_date)}</td> 
-              <td>{TglOnly(Sdays.end_date)}</td>
-              <td>{Sdays.price_percentage}</td>
-              <td>{Sdays.is_increase ? "Markup" : "Diskon"}</td>
+              <td>{Schedule.name}</td>
+              <td>{TglOnly(Schedule.start_date)}</td> 
+              <td>{TglOnly(Schedule.end_date)}</td>
+              <td>{Schedule.price_percentage}</td>
+              <td>{Schedule.is_increase ? "Markup" : "Diskon"}</td>
               <td>
-                <ActionButton variant="edit" onClick={() => handleUpdate(Sdays.id)} />
-                <ActionButton variant="view" onClick={() => handleView(Sdays.id)} />
-                <ActionButton variant="delete" onClick={() => handleDeleteClick(Sdays.id, Sdays.name)} /> 
+                <ActionButton variant="edit" onClick={() => handleUpdate(Schedule.id)} />
+                <ActionButton variant="view" onClick={() => handleView(Schedule.id)} />
+                <ActionButton variant="delete" onClick={() => handleDeleteClick(Schedule.id, Schedule.name)} /> 
               </td>
             </tr>
           ))}
@@ -102,4 +102,4 @@ const SdaysTable: React.FC<SdaysTableProps> = ({
   );
 };
 
-export default SdaysTable;
+export default ScheduleTable;

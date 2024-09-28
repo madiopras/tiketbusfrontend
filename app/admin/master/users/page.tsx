@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useCallback  } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import UserTable from "../../components/TableUser";
 import Loading from "./loading";
 import ActionButtonHeader from "../../components/ActionButtonHeader";
@@ -15,7 +15,14 @@ import AdvanceSearchUser from "../../components/AdvanceSearchUser";
 const UserListPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState({ name: "", phone_number: "", email: "", gender: "", role: "", is_active: ""});
+  const [search, setSearch] = useState({
+    name: "",
+    phone_number: "",
+    email: "",
+    gender: "",
+    role: "",
+    is_active: "",
+  });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -46,7 +53,6 @@ const UserListPage = () => {
     setLoading(false);
   }, [search, page]);
 
-
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchUsers();
@@ -54,7 +60,6 @@ const UserListPage = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [page, search, fetchUsers]);
-  
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,22 +68,19 @@ const UserListPage = () => {
 
   const handleSearchChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-  if (/^\d*$/.test(value)) {
-    setSearch((prevState) => ({ ...prevState, [name]: value }));
-  }
+    if (/^\d*$/.test(value)) {
+      setSearch((prevState) => ({ ...prevState, [name]: value }));
+    }
   };
 
   const confirmDelete = async (id: number) => {
     try {
-      const token = Cookies.get('token'); 
-      await axios.delete(
-        `/api/admin/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const token = Cookies.get("token");
+      await axios.delete(`/api/admin/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchUsers();
     } catch (error) {
       console.error("Failed to delete user", error);
@@ -109,7 +111,16 @@ const UserListPage = () => {
     setIsAdvanceSearchUserOpen(false);
   };
 
-  const handleAdvanceSearchSubmit = (filters: React.SetStateAction<{ name: string; phone_number: string; email: string; gender: string; role: string; is_active: string }>) => {
+  const handleAdvanceSearchSubmit = (
+    filters: React.SetStateAction<{
+      name: string;
+      phone_number: string;
+      email: string;
+      gender: string;
+      role: string;
+      is_active: string;
+    }>
+  ) => {
     setSearch(filters);
     setIsAdvanceSearchUserOpen(false);
   };
@@ -125,48 +136,58 @@ const UserListPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-2">
-        {/* Header Filter */}
-        {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-        <CollapsibleCard title="Filter User" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-            <InputForm label="Search By Name" variant="text" name="name" value={search.name} onChange={handleSearchChange} />
-            <InputForm label="Search By Phone Number" variant="text" name="phone_number" value={search.phone_number} onChange={handleSearchChangePhone} />
-            <ActionButtonForm variant="cari" onClick={handleAdvanceSearchClick} />
-            </div>
-          </div>
-        </CollapsibleCard>
+    <div>
+      {/* Header Filter */}
+      {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
+      <CollapsibleCard title="Filter User" defaultChecked={true}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputForm
+            label="Search By Name"
+            variant="text"
+            name="name"
+            value={search.name}
+            onChange={handleSearchChange}
+          />
+          <InputForm
+            label="Search By Phone Number"
+            variant="text"
+            name="phone_number"
+            value={search.phone_number}
+            onChange={handleSearchChangePhone}
+          />
+          <ActionButtonForm variant="cari" onClick={handleAdvanceSearchClick} />
+        </div>
+      </CollapsibleCard>
 
-        {/* Body Table */}
-        <CollapsibleCard title="User List" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="create" onClick={handleCreate} />
-            </div>
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="import" />
-              <ActionButtonHeader variant="export" />
-              <ActionButtonHeader variant="print" />
-            </div>
+      <div className="card rounded-md bg-base-100 shadow-lg mb-4 p-4">
+        <div className="flex flex-row">
+          <div className="basis-1/2">
+            <ActionButtonHeader variant="create" onClick={handleCreate} />
           </div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <UserTable
-        users={users}
-        page={page}
-        totalPages={totalPages}
-        totalItems={totalItems}
-        handleUpdate={handleUpdate}
-        handleView={handleView}
-        confirmDelete={confirmDelete}
-        handlePageChange={handlePageChange}
-      />
-          )}
-        </CollapsibleCard>
+          <div className="basis-1/2 absolute right-4">
+            {/* Untuk Isian button nantinya */}
+            <ActionButtonHeader variant="import" />
+            <ActionButtonHeader variant="export" />
+            <ActionButtonHeader variant="print" />
+          </div>
+        </div>
       </div>
+
+      {loading ? (
+        <Loading />
+      ) : (
+        <UserTable
+          users={users}
+          page={page}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          handleUpdate={handleUpdate}
+          handleView={handleView}
+          confirmDelete={confirmDelete}
+          handlePageChange={handlePageChange}
+        />
+      )}
+
       <AdvanceSearchUser
         isOpen={isAdvanceSearchUserOpen}
         onClose={handleAdvanceSearchClose}

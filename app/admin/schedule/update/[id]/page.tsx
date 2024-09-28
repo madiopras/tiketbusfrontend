@@ -130,64 +130,68 @@ const UpdateSdaysPage = () => {
         <Loading />
       ) : (
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <InputForm
-              label="Special Days"
-              variant="text"
-              id="name"
-              name="name"
-              value={sdays.name}
-              onChange={handleChange}
-              required
-            />
-            <DateRangePicker
-              label="Aktif Special Days"
-              required
-              startDate={sdays.start_date ? new Date(sdays.start_date) : null}
-              endDate={sdays.end_date ? new Date(sdays.end_date) : null}
-              onStartDateChange={handleStartDateChange}
-              onEndDateChange={handleEndDateChange}
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <InputForm
-              label="Persentase"
-              variant="number"
-              id="price_percentage"
-              name="price_percentage"
-              value={sdays.price_percentage}
-              onChange={handleChange}
-              required
-            />
-            <RadioFormGroup
-              label="Type"
-              name="is_increase"
-              value={sdays.is_increase}
-              onChange={handleRadioChange}
-              options={isIncrease}
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <TextAreaForm
-              label="Description"
-              name="description"
-              value={sdays.description}
-              onChange={handleChangeTextArea}
-              placeholder="Deskripsi Special Days"
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <RadioFormGroup
-              label="Is Active"
-              name="is_active"
-              value={sdays.is_active}
-              onChange={handleRadioChange}
-              options={isActive}
-            />
-          </div>
-          <div className="flex justify-end space-x-4">
-            <ActionButtonForm variant="cancel" onClick={handleCancel} />
-            <ActionButtonForm variant="update" isLoading={isLoading} />
+          <div className="flex w-full flex-col lg:flex-row">
+            <div className="card rounded-box grid flex-grow">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <InputForm
+                  label="Special Days"
+                  variant="text"
+                  id="name"
+                  name="name"
+                  value={sdays.name}
+                  onChange={handleChange}
+                  required
+                />
+                <DateRangePicker
+                  label="Aktif Special Days"
+                  required
+                  startDate={sdays.start_date ? new Date(sdays.start_date) : null}
+                  endDate={sdays.end_date ? new Date(sdays.end_date) : null}
+                  onStartDateChange={handleStartDateChange}
+                  onEndDateChange={handleEndDateChange}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <InputForm
+                  label="Persentase"
+                  variant="number"
+                  id="price_percentage"
+                  name="price_percentage"
+                  value={sdays.price_percentage}
+                  onChange={handleChange}
+                  required
+                />
+                <RadioFormGroup
+                  label="Type"
+                  name="is_increase"
+                  value={sdays.is_increase}
+                  onChange={handleRadioChange}
+                  options={isIncrease}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <TextAreaForm
+                  label="Description"
+                  name="description"
+                  value={sdays.description}
+                  onChange={handleChangeTextArea}
+                  placeholder="Deskripsi Special Days"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <RadioFormGroup
+                  label="Is Active"
+                  name="is_active"
+                  value={sdays.is_active}
+                  onChange={handleRadioChange}
+                  options={isActive}
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <ActionButtonForm variant="cancel" onClick={handleCancel} />
+                <ActionButtonForm variant="update" isLoading={isLoading} />
+              </div>
+            </div>
           </div>
         </form>
       )}

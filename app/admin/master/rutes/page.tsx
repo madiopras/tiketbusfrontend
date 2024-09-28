@@ -46,7 +46,6 @@ const RuteListPage = () => {
     setLoading(false);
   }, [search, page]);
 
-
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchRutes();
@@ -90,8 +89,6 @@ const RuteListPage = () => {
     setPage(newPage);
   };
 
-
-
   const handleExport = () => {
     // Implementasikan logika untuk mengekspor data
     console.log("Export data");
@@ -103,59 +100,55 @@ const RuteListPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-2">
-        {/* Header Filter */}
-        {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-        <CollapsibleCard title="Filter Rute" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <InputForm
-                label="Asal"
-                variant="text"
-                name="start_location"
-                value={search.start_location}
-                onChange={handleSearchChange}
-              />
-              <InputForm
-                label="Tujuan"
-                variant="text"
-                name="end_location"
-                value={search.end_location}
-                onChange={handleSearchChange}
-              />
-            </div>
-          </div>
-        </CollapsibleCard>
+    <div>
+      {/* Header Filter */}
+      {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
+      <CollapsibleCard title="Filter Rute" defaultChecked={true}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputForm
+            label="Asal"
+            variant="text"
+            name="start_location"
+            value={search.start_location}
+            onChange={handleSearchChange}
+          />
+          <InputForm
+            label="Tujuan"
+            variant="text"
+            name="end_location"
+            value={search.end_location}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </CollapsibleCard>
 
-        {/* Body Table */}
-        <CollapsibleCard title="Rute List" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="create" onClick={handleCreate} />
-            </div>
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="import" />
-              <ActionButtonHeader variant="export" />
-              <ActionButtonHeader variant="print" />
-            </div>
+      {/* Body Table */}
+
+      <div className="card rounded-md bg-base-100 shadow-lg mb-4 p-4">
+        <div className="flex flex-row">
+          <div className="basis-1/2">
+            <ActionButtonHeader variant="create" onClick={handleCreate} />
           </div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <RutesTable
-              rutes={rutes}
-              page={page}
-              totalPages={totalPages}
-              totalItems={totalItems}
-              handleUpdate={handleUpdate}
-              handleView={handleView}
-              confirmDelete={confirmDelete}
-              handlePageChange={handlePageChange}
-            />
-          )}
-        </CollapsibleCard>
+          <div className="basis-1/2 absolute right-4">
+            {/* Untuk Isian button nantinya */}
+          </div>
+        </div>
       </div>
+
+      {loading ? (
+        <Loading />
+      ) : (
+        <RutesTable
+          rutes={rutes}
+          page={page}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          handleUpdate={handleUpdate}
+          handleView={handleView}
+          confirmDelete={confirmDelete}
+          handlePageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

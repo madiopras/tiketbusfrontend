@@ -74,50 +74,14 @@ const UpdateLocationsPage = () => {
     router.push("/admin/master/location");
   };
 
-  const isHasACOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
-  const isHasToiletOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
-  const isHasTVOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
-  const isHasMusicOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
-  const isHasAirMineralOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
-  const isHasWifiOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
-  const isHasSnackOptions = [
-    { label: "Ya", value: true },
-    { label: "Tidak", value: false },
-  ];
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-4">
+    <div>
         {loading ? (
           <Loading />
         ) : (
           <CollapsibleCard title="Update User" defaultChecked={true}>
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InputForm
                   label="Name"
                   variant="text"
@@ -129,7 +93,7 @@ const UpdateLocationsPage = () => {
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <TextAreaForm
                   label="address"
                   name="address"
@@ -146,7 +110,6 @@ const UpdateLocationsPage = () => {
           </CollapsibleCard>
         )}
       </div>
-    </div>
   );
 };
 

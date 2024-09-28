@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useCallback, useEffect, ChangeEvent, FormEvent } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+} from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import Cookies from "js-cookie";
@@ -39,14 +45,18 @@ const CreateBusesPage: React.FC = () => {
     class_id: "",
     is_active: true,
   });
-  const [classOptions, setClassOptions] = useState<{ label: string; value: string }[]>([]);
+  const [classOptions, setClassOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [seats, setSeats] = useState<number[]>([]);
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
 
   const fetchClassNames = useCallback(async () => {
     try {
-      const response = await axios.get<{ data: ClassItem[] }>("/api/admin/classes");
+      const response = await axios.get<{ data: ClassItem[] }>(
+        "/api/admin/classes"
+      );
       const formattedClassOptions = response.data.data.map((classItem) => ({
         label: classItem.class_name,
         value: classItem.id,
@@ -61,15 +71,25 @@ const CreateBusesPage: React.FC = () => {
     fetchClassNames();
   }, [fetchClassNames]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
 
     if (name === "type_bus") {
       if (value === "Mini Bus") {
-        setBuses((prevState) => ({ ...prevState, type_bus: value, capacity: 10 }));
+        setBuses((prevState) => ({
+          ...prevState,
+          type_bus: value,
+          capacity: 10,
+        }));
         setSeats(Array.from({ length: 10 }, (_, i) => i + 1));
       } else {
-        setBuses((prevState) => ({ ...prevState, type_bus: value, capacity: 0 }));
+        setBuses((prevState) => ({
+          ...prevState,
+          type_bus: value,
+          capacity: 0,
+        }));
         setSeats([]);
       }
     } else if (name === "capacity") {
@@ -139,8 +159,24 @@ const CreateBusesPage: React.FC = () => {
                 onChange={handleChange}
                 required
               />
-              <SelectForm label="Type Bus" id="type_bus" name="type_bus" value={buses.type_bus} onChange={handleChange} options={typeBusOptions} required />
-              <SelectForm label="Kelas Bus" id="class_id" name="class_id" value={buses.class_id} onChange={handleChange} options={classOptions} required />
+              <SelectForm
+                label="Type Bus"
+                id="type_bus"
+                name="type_bus"
+                value={buses.type_bus}
+                onChange={handleChange}
+                options={typeBusOptions}
+                required
+              />
+              <SelectForm
+                label="Kelas Bus"
+                id="class_id"
+                name="class_id"
+                value={buses.class_id}
+                onChange={handleChange}
+                options={classOptions}
+                required
+              />
               <InputForm
                 label="Nama Bus"
                 variant="text"
@@ -180,15 +216,17 @@ const CreateBusesPage: React.FC = () => {
               />
             </div>
           </div>
-          <div className="divider divider-neutral lg:divider-horizontal">Seat</div>
+          <div className="divider divider-neutral lg:divider-horizontal">
+            Seat
+          </div>
           <div className="card rounded-box grid flex-grow">
-          {buses.type_bus === "Mini Bus" ? (
+            {buses.type_bus === "Mini Bus" ? (
               <BusMiniLayoutSeat seats={seats} />
             ) : buses.type_bus === "SHD Bus" ? (
               <BusLayoutSeat seats={seats} />
             ) : buses.type_bus === "VIP Bus" ? (
               <BusVipLayoutSeat seats={seats} />
-            ): (
+            ) : (
               <p>Select a bus type to see the layout</p>
             )}
           </div>

@@ -1,16 +1,11 @@
 "use client";
-
-
 import { useRouter } from "next/navigation";
 import { UserProvider } from "../admin/context/UserContext";
 import AdminNavbar from "./components/AdminNavbar";
 import AdminSidebar from "./components/AdminSidebar";
 import AdminFooter from "./components/AdminFooter";
-
-
 import Cookies from "js-cookie";
 import axios from "@/lib/axios";
-
 import { setDefaultOptions } from 'date-fns';
 import {id} from 'date-fns/locale/id'; 
 
@@ -24,9 +19,9 @@ setDefaultOptions({ locale: id });
     const router = useRouter();
     
     const handleLogout = async () => {
-        const token = Cookies.get("token");
+        const token = Cookies.get("token"); 
     
-        const res = await axios.post("http://localhost:8000/api/logout", {
+        const res = await axios.post("/api/logout", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

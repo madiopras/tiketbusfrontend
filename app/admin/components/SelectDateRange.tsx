@@ -68,7 +68,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           selectsStart
           startDate={startDate || undefined} // Menggunakan undefined jika startDate adalah null
           endDate={endDate || undefined} // Menggunakan undefined jika endDate adalah null
-          className={`input input-sm input-bordered w-60 max-w-x ${
+          className={`input input-sm input-bordered w-40 max-w-x ${
             showError ? "input-error" : ""
           }`}
           required={required}
@@ -87,7 +87,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           startDate={startDate || undefined} // Menggunakan undefined jika startDate adalah null
           endDate={endDate || undefined} // Menggunakan undefined jika endDate adalah null
           minDate={startDate || undefined}
-          className={`input input-sm input-bordered w-60 max-w-x ${
+          className={`input input-sm input-bordered w-40 max-w-x ${
             showError ? "input-error" : ""
           }`}
           required={required}

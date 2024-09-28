@@ -57,8 +57,8 @@ const UserTable: React.FC<UserTableProps> = ({
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-sm w-full">
+    <div className="overflow-x-auto bg-base-100 shadow-lg rounded-md p-4">
+      <table className="table table-sm w-full mb-4">
         <thead>
           <tr>
             <th>No</th>

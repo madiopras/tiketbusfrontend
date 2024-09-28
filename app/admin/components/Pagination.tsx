@@ -11,7 +11,7 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = React.memo(({ page, totalPages, totalItems, handlePageChange }) => {
   return (
-    <div className="flex justify-center mt-4">
+    <div className="flex justify-center mt-4 mb-4">
       <div className="join grid grid-cols-3">
         <button
           className={`join-item btn btn-outline btn-sm ${page === 1 ? 'btn-disabled' : ''}`}

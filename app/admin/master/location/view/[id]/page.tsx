@@ -39,38 +39,35 @@ const ViewlocationsPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-4">
-        {loading ? (
-          <Loading />
-        ) : (
-          <CollapsibleCard title="View Location" defaultChecked={true}>
-            <div className="grid grid-cols-3 gap-4">
-              <InputForm
-                label="Name"
-                variant="text"
-                id="name"
-                name="name"
-                value={locations.name}
-                disabled={true}
-              />
-              
-              <TextAreaForm
-                label="Description"
-                name="description"
-                value={locations.address}
-                placeholder="Deskripsi Bus"
-                disabled
-              />
-            
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <CollapsibleCard title="View Location" defaultChecked={true}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputForm
+              label="Name"
+              variant="text"
+              id="name"
+              name="name"
+              value={locations.name}
+              disabled={true}
+            />
 
-              <div className="flex justify-end col-span-3">
-                <ActionButtonForm variant="back" onClick={handleBack} />
-              </div>
+            <TextAreaForm
+              label="Description"
+              name="description"
+              value={locations.address}
+              placeholder="Deskripsi Bus"
+              disabled
+            />
+
+            <div className="flex justify-end col-span-3">
+              <ActionButtonForm variant="back" onClick={handleBack} />
             </div>
-          </CollapsibleCard>
-        )}
-      </div>
+          </div>
+        </CollapsibleCard>
+      )}
     </div>
   );
 };

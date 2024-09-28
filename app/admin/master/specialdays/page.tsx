@@ -10,12 +10,11 @@ import CollapsibleCard from "../../components/CollapsibleCard";
 import InputForm from "../../components/InputForm";
 import SdaysTable from "../../components/TableSdays";
 
-
 const SpecialDaysListPage = () => {
   const [sdays, setSdays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState({
-    name: ""
+    name: "",
   });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -40,7 +39,6 @@ const SpecialDaysListPage = () => {
     }
     setLoading(false);
   }, [search, page]);
-
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -85,8 +83,6 @@ const SpecialDaysListPage = () => {
     setPage(newPage);
   };
 
-
-
   const handleExport = () => {
     // Implementasikan logika untuk mengekspor data
     console.log("Export data");
@@ -98,52 +94,46 @@ const SpecialDaysListPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-2">
-        {/* Header Filter */}
-        {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-        <CollapsibleCard title="Filter Special Days" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <InputForm
-                label="Special Days"
-                variant="text"
-                name="name"
-                value={search.name}
-                onChange={handleSearchChange}
-              />
-            </div>
-          </div>
-        </CollapsibleCard>
+    <div>
+      {/* Header Filter */}
+      {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
+      <CollapsibleCard title="Filter Special Days" defaultChecked={true}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputForm
+            label="Special Days"
+            variant="text"
+            name="name"
+            value={search.name}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </CollapsibleCard>
 
-        {/* Body Table */}
-        <CollapsibleCard title="Special Days List" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="create" onClick={handleCreate} />
-            </div>
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="import" />
-              <ActionButtonHeader variant="export" />
-              <ActionButtonHeader variant="print" />
-            </div>
+      <div className="card rounded-md bg-base-100 shadow-lg mb-4 p-4">
+        <div className="flex flex-row">
+          <div className="basis-1/2">
+            <ActionButtonHeader variant="create" onClick={handleCreate} />
           </div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <SdaysTable
-              sdays={sdays}
-              page={page}
-              totalPages={totalPages}
-              totalItems={totalItems}
-              handleUpdate={handleUpdate}
-              handleView={handleView}
-              confirmDelete={confirmDelete}
-              handlePageChange={handlePageChange}
-            />
-          )}
-        </CollapsibleCard>
+          <div className="basis-1/2 absolute right-4">
+            {/* Untuk Isian button nantinya */}
+          </div>
+        </div>
       </div>
+
+      {loading ? (
+        <Loading />
+      ) : (
+        <SdaysTable
+          sdays={sdays}
+          page={page}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          handleUpdate={handleUpdate}
+          handleView={handleView}
+          confirmDelete={confirmDelete}
+          handlePageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

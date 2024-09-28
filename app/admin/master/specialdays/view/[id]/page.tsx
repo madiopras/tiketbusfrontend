@@ -59,62 +59,60 @@ const ViewSdaysPage = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="flex w-full flex-col lg:flex-row">
-          <div className="card rounded-box grid flex-grow">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <InputForm
-                label="Special Days"
-                variant="text"
-                id="name"
-                name="name"
-                value={sdays.name}
-                disabled
-              />
-              <DateRangePicker
-                label="Aktif Special Days"
-                disabled
-                startDate={sdays.start_date ? new Date(sdays.start_date) : null}
-                endDate={sdays.end_date ? new Date(sdays.end_date) : null}
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <InputForm
-                label="Persentase"
-                variant="number"
-                id="price_percentage"
-                name="price_percentage"
-                value={sdays.price_percentage}
-                disabled
-              />
-              <RadioFormGroup
-                label="Type"
-                name="is_increase"
-                value={sdays.is_increase}
-                options={isIncrease}
-                disabled
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <TextAreaForm
-                label="Description"
-                name="description"
-                value={sdays.description}
-                placeholder="Deskripsi Special Days"
-                disabled
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <RadioFormGroup
-                label="Is Active"
-                name="is_active"
-                value={sdays.is_active}
-                options={isActive}
-                disabled
-              />
-            </div>
-            <div className="flex justify-end space-x-4">
-              <ActionButtonForm variant="back" onClick={handleBack} />
-            </div>
+        <div className="card rounded-box grid flex-grow">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <InputForm
+              label="Special Days"
+              variant="text"
+              id="name"
+              name="name"
+              value={sdays.name}
+              disabled
+            />
+            <DateRangePicker
+              label="Aktif Special Days"
+              disabled
+              startDate={sdays.start_date ? new Date(sdays.start_date) : null}
+              endDate={sdays.end_date ? new Date(sdays.end_date) : null}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <InputForm
+              label="Persentase"
+              variant="number"
+              id="price_percentage"
+              name="price_percentage"
+              value={sdays.price_percentage}
+              disabled
+            />
+            <RadioFormGroup
+              label="Type"
+              name="is_increase"
+              value={sdays.is_increase}
+              options={isIncrease}
+              disabled
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <TextAreaForm
+              label="Description"
+              name="description"
+              value={sdays.description}
+              placeholder="Deskripsi Special Days"
+              disabled
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <RadioFormGroup
+              label="Is Active"
+              name="is_active"
+              value={sdays.is_active}
+              options={isActive}
+              disabled
+            />
+          </div>
+          <div className="flex justify-end space-x-4">
+            <ActionButtonForm variant="back" onClick={handleBack} />
           </div>
         </div>
       )}

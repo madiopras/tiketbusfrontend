@@ -157,72 +157,64 @@ const BusListPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-2">
-        {/* Header Filter */}
-        {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-        <CollapsibleCard title="Filter Bus" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <InputForm
-                label="Search By No. Bus"
-                variant="text"
-                name="bus_number"
-                value={search.bus_number}
-                onChange={handleSearchChange}
-              />
-              <SelectForm
-                label="Jenis Bus"
-                id="type_bus"
-                name="type_bus"
-                value={search.type_bus}
-                onChange={handleSelectChange}
-                options={typebusOptions}
-              />
-              <SelectForm
-                label="Kelas"
-                id="class_name"
-                name="class_name"
-                value={search.class_name}
-                onChange={handleSelectChange}
-                options={classOptions}
-              />
-              <ActionButtonForm
-                variant="cari"
-                onClick={handleAdvanceSearchClick}
-              />
-            </div>
-          </div>
-        </CollapsibleCard>
+    <div>
+      {/* Header Filter */}
+      {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
+      <CollapsibleCard title="Filter Bus" defaultChecked={true}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputForm
+            label="Search By No. Bus"
+            variant="text"
+            name="bus_number"
+            value={search.bus_number}
+            onChange={handleSearchChange}
+          />
+          <SelectForm
+            label="Jenis Bus"
+            id="type_bus"
+            name="type_bus"
+            value={search.type_bus}
+            onChange={handleSelectChange}
+            options={typebusOptions}
+          />
+          <SelectForm
+            label="Kelas"
+            id="class_name"
+            name="class_name"
+            value={search.class_name}
+            onChange={handleSelectChange}
+            options={classOptions}
+          />
+          <ActionButtonForm variant="cari" onClick={handleAdvanceSearchClick} />
+        </div>
+      </CollapsibleCard>
 
-        {/* Body Table */}
-        <CollapsibleCard title="Bus List" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="create" onClick={handleCreate} />
-            </div>
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="import" />
-              <ActionButtonHeader variant="export" />
-              <ActionButtonHeader variant="print" />
-            </div>
+      <div className="card rounded-md bg-base-100 shadow-lg mb-4 p-4">
+        <div className="flex flex-row">
+          <div className="basis-1/2">
+            <ActionButtonHeader variant="create" onClick={handleCreate} />
           </div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <BusTable
-              buses={buses}
-              page={page}
-              totalPages={totalPages}
-              totalItems={totalItems}
-              handleUpdate={handleUpdate}
-              handleView={handleView}
-              confirmDelete={confirmDelete}
-              handlePageChange={handlePageChange}
-            />
-          )}
-        </CollapsibleCard>
+          <div className="basis-1/2 absolute right-4">
+            {/* Untuk Isian button nantinya */}
+          </div>
+        </div>
       </div>
+
+      {loading ? (
+        <Loading />
+      ) : (
+        <BusTable
+          buses={buses}
+          page={page}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          handleUpdate={handleUpdate}
+          handleView={handleView}
+          confirmDelete={confirmDelete}
+          handlePageChange={handlePageChange}
+        />
+      )}
+
       <AdvanceSearchBus
         isOpen={isAdvanceSearchBusOpen}
         onClose={handleAdvanceSearchClose}

@@ -76,10 +76,10 @@ const LocationsListPage = () => {
   const handleCreate = () => {
     router.push("/admin/master/location/create");
   };
-  
+
   const handleUpdate = (id: number) => {
     router.push(`/admin/master/location/update/${id}`);
-  }; 
+  };
 
   const handleView = (id: number) => {
     router.push(`/admin/master/location/view/${id}`);
@@ -100,59 +100,53 @@ const LocationsListPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-2">
-        {/* Header Filter */}
-        {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-        <CollapsibleCard title="Filter location Bus" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <InputForm
-                label="Search By location"
-                variant="text"
-                name="name"
-                value={search.name}
-                onChange={handleSearchChange}
-              />
-              <InputForm
-                label="Search By address"
-                variant="text"
-                name="address"
-                value={search.address}
-                onChange={handleSearchChange}
-              />
-            </div>
-          </div>
-        </CollapsibleCard>
+    <div>
+      {/* Header Filter */}
+      {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
+      <CollapsibleCard title="Filter location Bus" defaultChecked={true}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputForm
+            label="Search By location"
+            variant="text"
+            name="name"
+            value={search.name}
+            onChange={handleSearchChange}
+          />
+          <InputForm
+            label="Search By address"
+            variant="text"
+            name="address"
+            value={search.address}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </CollapsibleCard>
 
-        {/* Body Table */}
-        <CollapsibleCard title="List location Bus" defaultChecked={true}>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="create" onClick={handleCreate} />
-            </div>
-            <div className="flex space-x-2">
-              <ActionButtonHeader variant="import" />
-              <ActionButtonHeader variant="export" />
-              <ActionButtonHeader variant="print" />
-            </div>
+      <div className="card rounded-md bg-base-100 shadow-lg mb-4 p-4">
+        <div className="flex flex-row">
+          <div className="basis-1/2">
+            <ActionButtonHeader variant="create" onClick={handleCreate} />
           </div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <LocationsTable
-              locations={users}
-              page={page}
-              totalPages={totalPages}
-              totalItems={totalItems}
-              handleUpdate={handleUpdate}
-              handleView={handleView}
-              confirmDelete={confirmDelete}
-              handlePageChange={handlePageChange}
-            />
-          )}
-        </CollapsibleCard>
+          <div className="basis-1/2 absolute right-4">
+            {/* Untuk Isian button nantinya */}
+          </div>
+        </div>
       </div>
+
+      {loading ? (
+        <Loading />
+      ) : (
+        <LocationsTable
+          locations={users}
+          page={page}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          handleUpdate={handleUpdate}
+          handleView={handleView}
+          confirmDelete={confirmDelete}
+          handlePageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

@@ -92,84 +92,87 @@ const UpdateUserPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-4">
-        {loading ? (
-          <Loading />
-        ) : (
-          <CollapsibleCard title="Update User" defaultChecked={true}>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-3 gap-4">
-                <InputForm
-                  label="Name"
-                  variant="text"
-                  id="name"
-                  name="name"
-                  value={user.name}
-                  onChange={handleChange}
-                  required
-                />
-                <InputForm
-                  label="Email"
-                  variant="email"
-                  id="email"
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  disabled={true}
-                />
-                <InputForm
-                  label="Phone"
-                  variant="text"
-                  id="phone_number"
-                  name="phone_number"
-                  value={user.phone_number}
-                  onChange={handleChange}
-                  disabled={true}
-                />
-                <SelectForm
-                  label="Gender"
-                  id="gender"
-                  name="gender"
-                  value={user.gender}
-                  onChange={handleChange}
-                  options={genderOptions}
-                  required
-                />
-                <SelectForm
-                  label="Role"
-                  id="role"
-                  name="role"
-                  value={user.role}
-                  onChange={handleChange}
-                  options={roleOptions}
-                  required
-                />
-                <InputForm
-                  label="Password"
-                  variant="password"
-                  id="password"
-                  name="password"
-                  value={user.password}
-                  onChange={handleChange}
-                  required
-                />
-                <RadioFormGroup
-                  label="Is Active"
-                  name="is_active"
-                  value={user.is_active}
-                  onChange={handleRadioChange}
-                  options={isActiveOptions}
-                />
-              </div>
-              <div className="flex justify-end space-x-4">
-                <ActionButtonForm variant="cancel" onClick={handleCancel} />
-                <ActionButtonForm variant="update" isLoading={isLoading} />
-              </div>
-            </form>
-          </CollapsibleCard>
-        )}
-      </div>
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <CollapsibleCard title="Update User" defaultChecked={true}>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <InputForm
+                label="Name"
+                variant="text"
+                id="name"
+                name="name"
+                value={user.name}
+                onChange={handleChange}
+                required
+              />
+              <InputForm
+                label="Email"
+                variant="email"
+                id="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                disabled={true}
+              />
+              <InputForm
+                label="Phone"
+                variant="text"
+                id="phone_number"
+                name="phone_number"
+                value={user.phone_number}
+                onChange={handleChange}
+                disabled={true}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <SelectForm
+                label="Gender"
+                id="gender"
+                name="gender"
+                value={user.gender}
+                onChange={handleChange}
+                options={genderOptions}
+                required
+              />
+              <SelectForm
+                label="Role"
+                id="role"
+                name="role"
+                value={user.role}
+                onChange={handleChange}
+                options={roleOptions}
+                required
+              />
+              <InputForm
+                label="Password"
+                variant="password"
+                id="password"
+                name="password"
+                value={user.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <RadioFormGroup
+                label="Is Active"
+                name="is_active"
+                value={user.is_active}
+                onChange={handleRadioChange}
+                options={isActiveOptions}
+              />
+            </div>
+
+            <div className="flex justify-end space-x-4">
+              <ActionButtonForm variant="cancel" onClick={handleCancel} />
+              <ActionButtonForm variant="update" isLoading={isLoading} />
+            </div>
+          </form>
+        </CollapsibleCard>
+      )}
     </div>
   );
 };

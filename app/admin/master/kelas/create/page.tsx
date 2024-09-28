@@ -100,7 +100,7 @@ const CreateClassesPage = () => {
       
         <CollapsibleCard title="Create Classes" defaultChecked={true}>
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <InputForm
                 label="Name"
                 variant="text"
@@ -111,7 +111,7 @@ const CreateClassesPage = () => {
                 required
               />
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <RadioFormGroup
                 label="AC"
                 name="has_ac"
@@ -162,7 +162,7 @@ const CreateClassesPage = () => {
                 options={isHasSnackOptions}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TextAreaForm
                 label="Description"
                 name="description"
