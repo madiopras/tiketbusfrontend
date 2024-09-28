@@ -177,4 +177,4 @@ const UpdateUserPage = () => {
   );
 };
 
-export default UpdateUserPage;
+export default UpdateUserPage; 
