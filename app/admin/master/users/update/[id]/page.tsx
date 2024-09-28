@@ -91,6 +91,7 @@ const UpdateUserPage = () => {
     { label: "Inactive", value: false },
   ];
 
+  
   return (
     <div>
       {loading ? (
