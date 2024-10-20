@@ -6,10 +6,7 @@ import AdminSidebar from "./components/AdminSidebar";
 import AdminFooter from "./components/AdminFooter";
 import Cookies from "js-cookie";
 import axios from "@/lib/axios";
-import { setDefaultOptions } from 'date-fns';
-import {id} from 'date-fns/locale/id'; 
 
-setDefaultOptions({ locale: id }); 
 
 
   export default function RootLayout({children} : {

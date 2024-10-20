@@ -1,5 +1,3 @@
-// SelectSearchForm.tsx
-
 import React, { useState, useCallback, useEffect } from 'react';
 import Select from 'react-select';
 import axios from '@/lib/axios'; // Sesuaikan path sesuai kebutuhan
@@ -9,9 +7,9 @@ interface SelectSearchFormProps {
   label: string;
   name: string;
   value: number;
-  onChange: (value: number) => void;
+  onChange: (value: number, label: string, valueprice: number) => void; // Ubah onChange untuk menerima value dan label
   apiEndpoint: string; // Endpoint API yang dinamis
-  mapData: (data: any) => { label: string; value: number }[]; // Fungsi untuk memetakan data
+  mapData: (data: any) => { label: string; value: number; valueprice: number }[]; // Fungsi untuk memetakan data
   required?: boolean;
   disabled?: boolean;
 }
@@ -27,7 +25,7 @@ const SelectSearchForm: React.FC<SelectSearchFormProps> = ({
   required = false,
   disabled = false,
 }) => {
-  const [options, setOptions] = useState<{ label: string; value: number }[]>([]);
+  const [options, setOptions] = useState<{ label: string; value: number; valueprice: number }[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [showError, setShowError] = useState(false);
 
@@ -89,14 +87,17 @@ const SelectSearchForm: React.FC<SelectSearchFormProps> = ({
     setSearchInput(inputValue);
   };
 
-  const handleSelectChange = (selectedOption: { value: number; label: string } | null) => {
-    onChange(selectedOption ? selectedOption.value : 0);
-    // Periksa apakah nilai yang dipilih kosong dan select diharuskan
+  const handleSelectChange = (selectedOption: { value: number; label: string; valueprice: number } | null) => {
+    if (selectedOption) {
+      onChange(selectedOption.value, selectedOption.label, selectedOption.valueprice); // Kirim value, label, dan harga
+    } else {
+      onChange(0, "", 0); // Reset jika tidak ada yang dipilih
+    }
     setShowError(required && (!selectedOption || selectedOption.value === 0));
   };
 
-   // Custom styles for react-select
-   const customStyles = {
+  // Custom styles for react-select
+  const customStyles = {
     control: (provided: any, state: any) => ({
       ...provided,
       borderColor: showError ? 'red' : provided.borderColor,

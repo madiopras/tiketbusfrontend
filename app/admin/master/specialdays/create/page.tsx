@@ -116,7 +116,8 @@ const CreateSdaysPage: React.FC = () => {
           />
 
           <DateRangePicker
-            label="Aktif Special Days"
+            labelstart="Tanggal Aktif"
+            labelend="Tanggal Berakhir"
             required
             onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange}

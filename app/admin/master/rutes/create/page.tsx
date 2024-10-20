@@ -69,7 +69,7 @@ const CreateRutesPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <SelectSerachForm
             label="Lokasi Awal"
-            name="start_location_id"
+            name="location_id"
             value={rutes.start_location_id}
             onChange={(value) =>
               setRutes((prevState) => ({

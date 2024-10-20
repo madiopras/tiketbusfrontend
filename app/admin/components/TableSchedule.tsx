@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import ActionButton from './ActionButton';
 import Pagination from './Pagination';
 import ConfirmModal from './ConfirmModal';
-import {TglOnly} from '@/lib/utils'
+import {HourOnly, TglOnly} from '@/lib/utils'
 
 interface Schedule {
   id: number;
   name: string;
-  start_date: string;
-  end_date: string;
-  price_percentage: number;
-  is_increase: boolean;
+  departure_time: string;
+  arrival_time: string;
+  bus_number: string;
+  bus_name: string;
+  type_bus: string;
+  class_name: string;
 }
 
 interface ScheduleTableProps {
@@ -59,32 +61,36 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-sm w-full">
+    <div className="overflow-x-auto bg-base-100 shadow-lg rounded-md p-4">
+      <table className="table table-sm w-full mb-4">
         <thead>
           <tr>
             <th>No</th>
-            <th>Special Days</th>
-            <th>Tanggal Mulai</th>
-            <th>Tanggal Selesai</th>
-            <th>Persentase %</th>
-            <th>Type</th>
+            <th>Lokasi Schedule</th>
+            <th>Tanggal Berangkat</th>
+            <th>Jam</th>
+            <th>No. Bus</th>
+            <th>Nama Bus</th>
+            <th>Type Bus</th>
+            <th>Kelas Bus</th>
             <th>Action</th>
-          </tr>
+          </tr> 
         </thead>
         <tbody>
           {schedule.map((Schedule, index) => (
             <tr key={Schedule.id} className="hover">
               <td>{(page - 1) * 10 + index + 1}</td>
               <td>{Schedule.name}</td>
-              <td>{TglOnly(Schedule.start_date)}</td> 
-              <td>{TglOnly(Schedule.end_date)}</td>
-              <td>{Schedule.price_percentage}</td>
-              <td>{Schedule.is_increase ? "Markup" : "Diskon"}</td>
+              <td>{TglOnly(Schedule.departure_time)}</td> 
+              <td>{HourOnly(Schedule.departure_time)}</td>
+              <td>{Schedule.bus_number}</td>
+              <td>{Schedule.bus_name}</td>
+              <td>{Schedule.type_bus}</td>
+              <td>{Schedule.class_name}</td>
               <td>
                 <ActionButton variant="edit" onClick={() => handleUpdate(Schedule.id)} />
                 <ActionButton variant="view" onClick={() => handleView(Schedule.id)} />
-                <ActionButton variant="delete" onClick={() => handleDeleteClick(Schedule.id, Schedule.name)} /> 
+                <ActionButton variant="delete" onClick={() => handleDeleteClick(Schedule.id, Schedule.departure_time)} /> 
               </td>
             </tr>
           ))}

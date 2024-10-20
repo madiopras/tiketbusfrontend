@@ -103,7 +103,7 @@ const RuteListPage = () => {
     <div>
       {/* Header Filter */}
       {/* <h1 className="text-2xl font-bold mb-4">User Management</h1> */}
-      <CollapsibleCard title="Filter Rute" defaultChecked={true}>
+      <CollapsibleCard title="Filter Rute" defaultChecked={false}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <InputForm
             label="Asal"

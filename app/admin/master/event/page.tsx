@@ -1,99 +1,67 @@
-'use client'
-import React, { useState, useEffect, useCallback } from 'react';
-import axios from "@/lib/axios";
-import Select from 'react-select';
+import React from 'react'
 
-interface LocationItem {
-  id: number;
-  name: string;
-}
-
-const AdminEventPage = () => {
-  const [search, setSearch] = useState({ name: "" });
-  const [options, setOptions] = useState<{ label: string; value: number }[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [cache, setCache] = useState<{ [key: string]: { label: string; value: number }[] }>({});
-
-  const fetchLocations = useCallback(async (searchTerm: string) => {
-    if (cache[searchTerm]) {
-      setOptions(cache[searchTerm]);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await axios.get<{ data: LocationItem[] }>("/api/admin/locations", {
-        params: {
-          name: searchTerm,
-          limit: 10,
-        },
-      });
-      const formattedOptions = response.data.data.map(suggestion => ({
-        value: suggestion.id,
-        label: suggestion.name,
-      }));
-      setOptions(formattedOptions);
-      setCache(prevCache => ({ ...prevCache, [searchTerm]: formattedOptions }));
-    } catch (error) {
-      console.error("Gagal mengambil lokasi", error);
-    }
-    setLoading(false);
-  }, [cache]);
-
-  const fetchDefaultLocations = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get<{ data: LocationItem[] }>("/api/admin/locations", {
-        params: {
-          limit: 10, // Ambil maksimal 10 lokasi default
-        },
-      });
-      const formattedOptions = response.data.data.map(suggestion => ({
-        value: suggestion.id,
-        label: suggestion.name,
-      }));
-      setOptions(formattedOptions);
-    } catch (error) {
-      console.error("Gagal mengambil lokasi default", error);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (search.name) {
-        fetchLocations(search.name);
-      } else {
-        fetchDefaultLocations();
-      }
-    }, 2000);
-    return () => clearTimeout(delayDebounceFn);
-  }, [search.name, fetchLocations]);
-
-  const handleInputChange = (inputValue: string) => {
-    setSearch({ name: inputValue });
-  };
-
-  const handleChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setSearch({ name: selectedOption.label }); // Mengatur nama lokasi yang dipilih
-    } else {
-      setSearch({ name: '' }); // Reset pencarian jika tidak ada pilihan
-    }
-  };
-  
+export default function AdminEventPage() {
   return (
-    <div className="w-full max-w-xs mx-auto">
-      <Select
-        options={options}
-        onInputChange={handleInputChange} // Menggunakan handleInputChange
-        onChange={handleChange}
-        placeholder="Cari Lokasi"
-        isClearable
-        isLoading = {loading}
-      />
+    <div>
+     <div className="card card-compact bg-base-100 w-96 shadow-xl">
+  <figure>
+    <img
+      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+      alt="Shoes" />
+  </figure>
+  <div className="card-body">
+    <h2 className="card-title">Shoes!</h2>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div className="card-actions justify-end">
+      <button className="btn btn-primary">Buy Now</button>
     </div>
-  );
-};
+  </div>
+</div>
 
-export default AdminEventPage;
+<div className="card bg-base-100 image-full w-96 shadow-xl">
+  <figure>
+    <img
+      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+      alt="Shoes" />
+  </figure>
+  <div className="card-body">
+    <h2 className="card-title">Shoes!</h2>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div className="card-actions justify-end">
+      <button className="btn btn-primary">Buy Now</button>
+    </div>
+  </div>
+</div>
+
+<div className="card glass w-96">
+  <figure>
+    <img
+      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+      alt="car!" />
+  </figure>
+  <div className="card-body">
+    <h2 className="card-title">Life hack</h2>
+    <p>How to park your car at your garage?</p>
+    <div className="card-actions justify-end">
+      <button className="btn btn-primary">Learn now!</button>
+    </div>
+  </div>
+</div>
+
+<div className="card card-side bg-base-100 shadow-xl">
+  <figure>
+    <img
+      src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+      alt="Movie" />
+  </figure>
+  <div className="card-body">
+    <h2 className="card-title">New movie is released!</h2>
+    <p>Click the button to watch on Jetflix app.</p>
+    <div className="card-actions justify-end">
+      <button className="btn btn-primary">Watch</button>
+    </div>
+  </div>
+</div>
+    </div>
+  )
+}

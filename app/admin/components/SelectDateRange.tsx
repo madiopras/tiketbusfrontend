@@ -1,10 +1,14 @@
+import { now } from "moment-timezone";
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
+
 interface DateRangePickerProps {
   idate?: string;
-  label: string;
+  labelstart: string;
+  labelend: string;
   startDate?: Date | null; // Menambahkan properti startDate
   endDate?: Date | null;   // Menambahkan properti endDate
   onStartDateChange?: (date: Date | null) => void;
@@ -15,7 +19,8 @@ interface DateRangePickerProps {
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
   idate,
-  label,
+  labelstart,
+  labelend,
   onStartDateChange,
   onEndDateChange,
   startDate: initialStartDate = null, // Ubah nama prop menjadi initialStartDate
@@ -54,49 +59,30 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   };
 
   return (
-    <div className="form-control mb-2">
+    <>
+      <div className="form-control">
       <label className="label text-sm" htmlFor={idate}>
-        {label}
+        {labelstart}
       </label>
-      <div className="flex gap-4">
         <DatePicker
           dateFormat="dd MMMM yyyy h:mm aa"
           showIcon
           selected={startDate}
           onChange={(date) => handleDateChange(date, true)}
+          withPortal
           showTimeSelect
           selectsStart
           startDate={startDate || undefined} // Menggunakan undefined jika startDate adalah null
           endDate={endDate || undefined} // Menggunakan undefined jika endDate adalah null
-          className={`input input-sm input-bordered w-40 max-w-x ${
+          minDate={new Date()}
+          className={`input input-sm input-bordered w-full ${
             showError ? "input-error" : ""
           }`}
           required={required}
           disabled={disabled}
           isClearable
-          closeOnScroll={true}
           placeholderText="Tanggal Mulai"
         />
-        <DatePicker
-          dateFormat="dd MMMM yyyy h:mm aa"
-          showIcon
-          selected={endDate}
-          onChange={(date) => handleDateChange(date, false)}
-          showTimeSelect
-          selectsEnd
-          startDate={startDate || undefined} // Menggunakan undefined jika startDate adalah null
-          endDate={endDate || undefined} // Menggunakan undefined jika endDate adalah null
-          minDate={startDate || undefined}
-          className={`input input-sm input-bordered w-40 max-w-x ${
-            showError ? "input-error" : ""
-          }`}
-          required={required}
-          disabled={disabled}
-          isClearable
-          closeOnScroll={true}
-          placeholderText="Tanggal Selesai"
-        />
-      </div>
       <div className="label">
         {showError && (
           <span className="label-text-alt text-error">
@@ -105,6 +91,40 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         )}
       </div>
     </div>
+
+    <div className="form-control">
+      <label className="label text-sm" htmlFor={idate}>
+      {labelend}
+      </label>
+      <DatePicker
+          dateFormat="dd MMMM yyyy h:mm aa"
+          showIcon
+          selected={endDate}
+          onChange={(date) => handleDateChange(date, false)}
+          withPortal
+          showTimeSelect
+          selectsEnd
+          startDate={startDate || undefined} // Menggunakan undefined jika startDate adalah null
+          endDate={endDate || undefined} // Menggunakan undefined jika endDate adalah null
+          minDate={startDate || new Date()}
+          className={`input input-sm input-bordered w-full ${
+            showError ? "input-error" : ""
+          }`}
+          required={required}
+          disabled={disabled}
+          isClearable
+          placeholderText="Tanggal Selesai"
+        />
+      <div className="label">
+        {showError && (
+          <span className="label-text-alt text-error">
+            Field ini wajib diisi
+          </span>
+        )}
+      </div>
+    </div>
+    </>
+    
   );
 };
 
