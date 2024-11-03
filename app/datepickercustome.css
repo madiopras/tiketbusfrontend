@@ -1,0 +1,7 @@
+.react-datepicker__input-container .react-datepicker__calendar-icon {
+    margin-top: 20px;
+  }
+
+  .react-datepicker__view-calendar-icon input {
+    padding: 13px 10px 5px 32px;
+  }
