@@ -70,7 +70,8 @@ const ViewSdaysPage = () => {
               disabled
             />
             <DateRangePicker
-              label="Aktif Special Days"
+              labelstart="Tanggal Aktif"
+              labelend="Tanggal Berakhir"
               disabled
               startDate={sdays.start_date ? new Date(sdays.start_date) : null}
               endDate={sdays.end_date ? new Date(sdays.end_date) : null}
