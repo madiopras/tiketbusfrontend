@@ -2,8 +2,6 @@
 
 import React, {
   useState,
-  useCallback,
-  useEffect,
   ChangeEvent,
   FormEvent,
 } from "react";
@@ -16,6 +14,7 @@ import InputForm from "@/app/admin/components/InputForm";
 import RadioFormGroup from "@/app/admin/components/RadioForm";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
 import DateRangePicker from "@/app/admin/components/SelectDateRange";
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
 
 interface Sdays {
   name: string;
@@ -82,8 +81,27 @@ const CreateSdaysPage: React.FC = () => {
       const create_by_id = Cookies.get("token");
       await axios.post("/api/admin/sdays", { ...sdays, create_by_id });
       router.push("/admin/master/specialdays");
-    } catch (error) {
+      // Menampilkan toast sukses menggunakan utility
+      showSuccessToast("Special day created successfully!");
+    } catch (error: any) {
       console.error("Failed to create special days", error);
+      
+      // Menangani kesalahan berdasarkan status HTTP
+      if (error.response) {
+        // Jika respons ada
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data yang dimasukkan.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        // Jika tidak ada response dari server
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
     setLoading(false);
   };
@@ -148,6 +166,7 @@ const CreateSdaysPage: React.FC = () => {
             value={sdays.description}
             onChange={handleChangeTextArea}
             placeholder="Deskripsi Special Days"
+            
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

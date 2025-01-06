@@ -1,64 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from '@/lib/axios';
 import Cookies from 'js-cookie';
 import logo from "../logo1.png";
 import Image from "next/image";
-
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
 
 const AdminLoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Mencegah halaman reload
     setIsLoading(true);
 
     try {
-      // Get CSRF token from Laravel
+      // Mendapatkan token CSRF dari Laravel
       await axios.get('/sanctum/csrf-cookie');
-
-      // Send login request
+      
+      // Mengirimkan permintaan login
       const response = await axios.post('/api/login', { email, password });
 
-      if (response.status === 201) {
-        Cookies.set('token', response.data.token, { expires: 1 }); // Set token cookie for 1 day
+      if (response.status === 200 && response.data.token) {
+        Cookies.set('token', response.data.token, { expires: 1 }); // Menyimpan token di cookie untuk 1 hari
         router.push('/admin');
+        showSuccessToast("Login berhasil!");
+      } else {
+        showErrorToast("Respon login tidak valid.");
       }
-    } catch (err: any) {
-      setIsLoading(false);
-      setError('Login failed. Please check your credentials and try again.');
+    } catch (error: any) {
+      // Menangani error dari respons
+      if (error.response) {
+        // Menangani kode error yang sudah diketahui
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data Anda.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
+    setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 relative">
-      {error && (
-        <div className="absolute top-4 right-4 alert alert-error shadow-lg w-80">
-          <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current flex-shrink-0 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M18.364 5.636L5.636 18.364M5.636 5.636l12.728 12.728"
-              />
-            </svg>
-            <span>{error}</span>
-          </div>
-        </div>
-      )}
       <div className="card w-full max-w-sm shadow-xl bg-base-100">
         <div className="card-body">
           <div className="flex justify-center mb-4">
@@ -81,7 +77,7 @@ const AdminLoginPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form-control ">
+            <div className="form-control">
               <label htmlFor="password" className="label">
                 <span className="label-text">Password</span>
               </label>
@@ -102,13 +98,13 @@ const AdminLoginPage = () => {
                 className={`btn btn-primary w-full ${isLoading ? "loading" : ""}`}
                 disabled={isLoading}
               >
-                {isLoading ? "" : "Sign in"}
+                {isLoading ? "Signing in..." : "Sign in"}
               </button>
             </div>
           </form>
           <div className="text-center mt-4">
             <Link href="/admin/register" className="link link-primary">
-              Dont have an account? Register
+              Tidak punya akun? Daftar
             </Link>
           </div>
         </div>

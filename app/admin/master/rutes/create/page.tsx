@@ -8,6 +8,7 @@ import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
 import CollapsibleCard from "@/app/admin/components/CollapsibleCard";
 import InputForm from "@/app/admin/components/InputForm";
 import SelectSerachForm from "@/app/admin/components/SelectSearchForm";
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
 
 interface Rute {
   start_location_id: number;
@@ -53,8 +54,26 @@ const CreateRutesPage: React.FC = () => {
       const create_by_id = Cookies.get("token");
       await axios.post("/api/admin/routes", { ...rutes, create_by_id });
       router.push("/admin/master/rutes");
-    } catch (error) {
+      showSuccessToast("Rute created successfully!");
+    } catch (error : any) {
       console.error("Gagal membuat rute", error);
+
+      // Menangani kesalahan berdasarkan status HTTP
+      if (error.response) {
+        // Jika respons ada
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data yang dimasukkan.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        // Jika tidak ada response dari server
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
     setLoading(false);
   };

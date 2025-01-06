@@ -9,6 +9,7 @@ import CollapsibleCard from "@/app/admin/components/CollapsibleCard";
 import InputForm from "@/app/admin/components/InputForm";
 import RadioFormGroup from "@/app/admin/components/RadioForm";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
 
 const CreateClassesPage = () => {
   const [classes, setClasses] = useState({
@@ -50,8 +51,26 @@ const CreateClassesPage = () => {
       // Assuming you store admin ID in localStorage
       await axios.post("/api/admin/classes", { ...classes, create_by_id });
       router.push("/admin/master/kelas");
-    } catch (error) {
+      showSuccessToast("Kelas created successfully!");
+    } catch (error : any) {
       console.error("Failed to create classes", error);
+
+      // Menangani kesalahan berdasarkan status HTTP
+      if (error.response) {
+        // Jika respons ada
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data yang dimasukkan.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        // Jika tidak ada response dari server
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
     setLoading(false);
   };

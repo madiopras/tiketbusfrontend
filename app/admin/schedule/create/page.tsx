@@ -11,9 +11,12 @@ import ActionButtonHeader from "../../components/ActionButtonHeader";
 import DtlScheduleRute from "../../components/TableScheduleRute";
 import RouteModal from "../../components/ModalScheduleRute";
 import { convertToIndonesianTime } from "@/lib/utils";
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
+
 interface Schedules {
   location_id: number;
   bus_id: number;
+  supir_id: number;
   departure_time: string;
   arrival_time: string;
   description: string;
@@ -37,6 +40,11 @@ interface BusItem {
   id: number;
   bus_number: string;
 }
+interface SupirItem {
+  id: number;
+  name: string;
+
+}
 
 // Fungsi untuk memetakan data lokasi
 const mapLocationData = (data: any) => {
@@ -52,11 +60,19 @@ const mapBusData = (data: any) => {
     value: item.id,
   }));
 };
+// Fungsi untuk memetakan data supir
+const mapSupirData = (data: any) => {
+  return data.map((item: SupirItem) => ({
+    label: item.name,
+    value: item.id,
+  }));
+};
 
 const CreateSchedulePage: React.FC = () => {
   const [schedules, setSchedules] = useState<Schedules>({
     location_id: 0,
     bus_id: 0,
+    supir_id:0,
     departure_time: "",
     arrival_time: "",
     description: "",
@@ -197,9 +213,26 @@ const CreateSchedulePage: React.FC = () => {
         create_by_id,
       });
       router.push("/admin/schedule");
-    } catch (error) {
+      showSuccessToast("Schedule created successfully!");
+    } catch (error : any) {
       console.error("Failed to create schedule", error);
-      alert("Gagal membuat jadwal. Silakan coba lagi.");
+      
+      // Menangani kesalahan berdasarkan status HTTP
+      if (error.response) {
+        // Jika respons ada
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data yang dimasukkan.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        // Jika tidak ada response dari server
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
     setLoading(false);
   };
@@ -244,6 +277,17 @@ const CreateSchedulePage: React.FC = () => {
             }
             apiEndpoint={apiEndpoint}
             mapData={mapBusData}
+            required
+          />
+          <SelectSearchForm
+            label="Supir"
+            name="supir_id"
+            value={schedules.supir_id}
+            onChange={(value) =>
+              setSchedules((prevState) => ({ ...prevState, supir_id: value }))
+            }
+            apiEndpoint="/api/admin/users?role=supir"
+            mapData={mapSupirData}
             required
           />
         </div>

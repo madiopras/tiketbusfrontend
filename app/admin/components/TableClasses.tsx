@@ -1,11 +1,10 @@
-// components/UserTable.tsx
 import React, { useState } from 'react';
 import ActionButton from './ActionButton';
 import Pagination from './Pagination';
 import ConfirmModal from './ConfirmModal';
 
-interface Classes {
-  id: number;
+interface Classes { 
+  id: number; 
   class_name: string;
   description: string;
 }

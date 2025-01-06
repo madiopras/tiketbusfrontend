@@ -10,6 +10,7 @@ import RadioFormGroup from "@/app/admin/components/RadioForm";
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
 import Loading from "./loading";
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
 
 const UpdateClassesPage = () => {
   const [classes, setClasses] = useState({
@@ -72,8 +73,26 @@ const UpdateClassesPage = () => {
         },
       });
       router.push("/admin/master/kelas");
-    } catch (error) {
+      showSuccessToast("Kelas updated successfully!");
+    } catch (error : any) {
       console.error("Failed to update kelas", error);
+
+      // Menangani kesalahan berdasarkan status HTTP
+      if (error.response) {
+        // Jika respons ada
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data yang dimasukkan.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        // Jika tidak ada response dari server
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
     setLoadingUpdate(false);
   };

@@ -1,8 +1,9 @@
+import SeatSelection from "../components/SeatSelection";
 
 export default function AdminOrderPage() {
   return (
     <div>
-      <p>Hallo ini halaman Order Admin</p>
+      <SeatSelection />
     </div>
   )
 }

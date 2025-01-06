@@ -4,6 +4,7 @@ import { UserProvider } from "../admin/context/UserContext";
 import AdminNavbar from "./components/AdminNavbar";
 import AdminSidebar from "./components/AdminSidebar";
 import AdminFooter from "./components/AdminFooter";
+
 import Cookies from "js-cookie";
 import axios from "@/lib/axios";
 
@@ -39,7 +40,7 @@ import axios from "@/lib/axios";
 
         {/* Page content here */}
         <div className="container mx-auto min-h-screen p-2 mt-4">
-  
+      
             {children}
          
         </div>

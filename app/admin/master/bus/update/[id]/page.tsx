@@ -14,6 +14,7 @@ import TextAreaForm from "@/app/admin/components/TextAreaForm";
 import BusLayoutSeat from "@/app/admin/components/BusLayoutSeat";
 import BusMiniLayoutSeat from "@/app/admin/components/BusMiniLayoutSeat";
 import BusVipLayoutSeat from "@/app/admin/components/BusVipLayoutSeat";
+import { showSuccessToast, showErrorToast } from "@/lib/toast";
 
 
 interface ClassItem {
@@ -137,8 +138,26 @@ const UpdateBusesPage = () => {
         },
       });
       router.push("/admin/master/bus");
-    } catch (error) {
+      showSuccessToast("Bus updated successfully!");
+    } catch (error : any) {
       console.error("Failed to update bus", error);
+
+      // Menangani kesalahan berdasarkan status HTTP
+      if (error.response) {
+        // Jika respons ada
+        if (error.response.status === 400) {
+          showErrorToast("Permintaan tidak valid. Silakan periksa data yang dimasukkan.");
+        } else if (error.response.status === 500) {
+          showErrorToast("Terjadi masalah di server. Silakan coba lagi nanti.");
+        } else if (error.response.data && error.response.data.message) {
+          showErrorToast(error.response.data.message); // Menampilkan pesan error dari API
+        } else {
+          showErrorToast("Terjadi kesalahan yang tidak terduga.");
+        }
+      } else {
+        // Jika tidak ada response dari server
+        showErrorToast("Tidak dapat terhubung ke server. Silakan coba lagi.");
+      }
     }
     setLoadingUpdate(false);
   };

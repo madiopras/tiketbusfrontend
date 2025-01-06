@@ -11,18 +11,17 @@ import axios from "@/lib/axios";
 import Cookies from "js-cookie";
 import ActionButtonForm from "@/app/admin/components/ActionButtonForm";
 import Loading from "./loading";
-import CollapsibleCard from "@/app/admin/components/CollapsibleCard";
 import TextAreaForm from "@/app/admin/components/TextAreaForm";
 import DateRangePicker from "@/app/admin/components/SelectDateRange";
 import SelectSearchForm from "@/app/admin/components/SelectSearchForm";
 import ActionButtonHeader from "@/app/admin/components/ActionButtonHeader";
 import DtlScheduleRute from "@/app/admin/components/TableScheduleRute";
 import RouteModal from "@/app/admin/components/ModalScheduleRute";
-import InputForm from "@/app/admin/components/InputForm";
 
 interface Schedules {
   location_id: number;
   bus_id: number;
+  supir_id:number;
   departure_time: string;
   arrival_time: string;
   description: string;
@@ -48,6 +47,11 @@ interface BusItem {
   bus_number: string;
 }
 
+interface SupirItem {
+  id: number;
+  name: string;
+}
+
 // Fungsi untuk memetakan data lokasi
 const mapLocationData = (data: any) => {
   return data.map((item: LocationItem) => ({
@@ -62,11 +66,19 @@ const mapBusData = (data: any) => {
     value: item.id,
   }));
 };
+// Fungsi untuk memetakan data supir
+const mapSupirData = (data: any) => {
+  return data.map((item: SupirItem) => ({
+    label: item.name,
+    value: item.id,
+  }));
+};
 
 const UpdateSchedulePage = () => {
   const [schedules, setSchedules] = useState<Schedules>({
     location_id: 0,
     bus_id: 0,
+    supir_id: 0,
     departure_time: "",
     arrival_time: "",
     description: "",
@@ -289,7 +301,19 @@ const UpdateSchedulePage = () => {
             mapData={mapBusData}
             required
           />
+           <SelectSearchForm
+            label="Supir"
+            name="supir_id"
+            value={schedules.supir_id}
+            onChange={(value) =>
+              setSchedules((prevState) => ({ ...prevState, supir_id: value }))
+            }
+            apiEndpoint="/api/admin/users?role=supir"
+            mapData={mapSupirData}
+            required
+          />
         </div>
+        
         
       </div>
       <div className="bg-base-100 shadow-lg rounded-md p-4">
